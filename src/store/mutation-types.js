@@ -1,0 +1,1 @@
+export const ADD_GOOD_TO_ORDER = 'ADD_GOOD_TO_ORDER'
