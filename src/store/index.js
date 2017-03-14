@@ -55,9 +55,10 @@ let store = new Vuex.Store({
       }
     },
     setOrderListPrevPage (state) {
-      if (state.goodsOptions.currentPage > 1)
+      if (state.goodsOptions.currentPage > 1) {
         state.goodsOptions.lastPage = false
         state.goodsOptions.currentPage--
+      }
     },
     setOrderListFirstPage (state) {
       state.goodsOptions.lastPage = false
@@ -68,6 +69,7 @@ let store = new Vuex.Store({
   actions: {
     setError ({commit}, error) {
       commit('setError', error)
+      setTimeout(() => {commit('clearError')}, 2000)
     },
     clearError ({commit}) {
       commit('clearError')
@@ -85,25 +87,6 @@ let store = new Vuex.Store({
         console.log(err)
         commit('setError', err)
       })
-/*
-      let items=[]
-      const goodsRef = db.ref('goods')
-      const query = goodsRef.orderByKey().limitToFirst(state.goodsOptions.perPage).startAt(state.goodsOptions.lastKey)
-      query.once('value')
-      .then(snapshot => {
-        snapshot.forEach( snap => {
-          let r = {
-            '.key': snap.key,
-            ...snap.val()
-          }
-          items.push(r)
-        })
-        commit('loadGoodsList', items)
-      })
-      .catch(err => {
-        commit('setError', err)
-      })
-*/
     },
     setOrderListNextPage ({dispatch, commit, state}) {
       commit('setOrderListNextPage')
@@ -120,6 +103,9 @@ let store = new Vuex.Store({
         commit('setOrderListFirstPage')
         dispatch('loadGoodsList')
       }
+    },
+    updateCart ({dispatch, commit, state}, {good, qty}) {
+      console.log(good, qty)
     }
   },
   getters: {

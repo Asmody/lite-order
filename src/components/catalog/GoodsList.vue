@@ -1,19 +1,23 @@
 <template>
-  <table class="table is-striped">
+  <table id="goods-list" class="table is-striped">
     <thead>
       <tr>
-        <th>Код</th>
-        <th>Бренд</th>
-        <th>Наименование</th>
-        <th>Цена</th>
-        <th>К-во</th>
+        <th class="col-code">Код</th>
+        <th class="col-brand">Бренд</th>
+        <th class="col-descr">Наименование</th>
+        <th class="col-price">Цена</th>
+        <th class="col-qty">К-во</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="good in goods" :key="good['.key']">
-        <td>{{good.code}}</td>
-        <td>{{good.brand}}</td>
-        <td>{{good.description}}</td>
+      <tr v-for="(good,idx) in goods" :key="good['.key']">
+        <td class="col-code">{{good.code}}</td>
+        <td class="col-brand">{{good.brand}}</td>
+        <td class="col-descr">{{good.description}}</td>
+        <td class="col-price">{{good.price}}</td>
+        <td class="col-qty">
+          <input class="input is-small" type="number" maxlength="10" v-model="good.qty" @input="(e)=>{updateQty(idx, e)}" />
+        </td>
       </tr>
     </tbody>
   </table>
@@ -34,10 +38,41 @@ export default {
     this.loadGoodsList()
   },
   methods: {
+    updateQty (idx, e) {
+      let val = e.target.valueAsNumber
+      console.log(val);
+      if (val === NaN) {
+        e.target.value = '0'
+      } else {
+        this.updateCart({good:this.goods[idx], qty:val})
+      }
+    },
     ...mapActions([
-        'loadGoodsList'
+        'loadGoodsList',
+        'updateCart'
     ])
   }
 }
 
 </script>
+
+<style scoped>
+#goods-list{
+  table-layout: fixed;
+}
+.col-code, .col-brand{
+  width:10%;
+}
+.col-descr{
+  width:auto;
+}
+.col-price{
+  width:10%;
+}
+td.col-price{
+  text-align: right;
+}
+.col-qty{
+  width:15%;
+}
+</style>

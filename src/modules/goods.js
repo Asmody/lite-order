@@ -1,6 +1,7 @@
 import db from '@/db'
 
-export default {
+
+ const goodsApi = {
   getGoodsList ({orderBy, startAt, perPage}) {
     return new Promise ( (resolve, reject) => {
       let items=[]
@@ -8,22 +9,39 @@ export default {
       let method = orderBy == '.key' ? 'orderByKey' : 'orderByChild'
       let methParams = orderBy == '.key' ? [] : [orderBy]
       //console.log(method)
+      let pr=[]
       const query = goodsRef[method].apply(goodsRef, methParams).limitToFirst(perPage).startAt(startAt)
       query.once('value')
         .then(snapshot => {
           snapshot.forEach( snap => {
-            let r = {
-              '.key': snap.key,
-              ...snap.val()
-            }
-            items.push(r)
+            pr.push(goodsApi.getPrice(snap.key))
           })
-          resolve(items)
+          Promise.all(pr)
+          .then(vals => {
+            let idx=0
+            snapshot.forEach( snap => {
+              items.push( {
+                '.key': snap.key,
+                'price': vals[idx++],
+                'qty': 0,
+                ...snap.val()
+              })
+            })
+            resolve(items)
+          })
+          .catch(err => {
+            console.log(err)
+            reject(err.message)
+          })
         })
         .catch(err => {
           console.log(err)
           reject(err.message)
         })
     })
+  },
+  getPrice (itemKey) {
+      return db.ref('prices').child(itemKey).once('value').then(snapshot => snapshot.val())
   }
 }
+export default goodsApi

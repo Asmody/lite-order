@@ -11,13 +11,13 @@
       </header>
       <section class="section">
         <div class="container is-fluid">
-          <div class="notification is-danger" v-if="error">
-            <button class="delete" @click="clearError"></button>
-            {{error}}
-          </div>
           <transition name="fade">
-            <router-view></router-view>
+            <div class="notification is-danger" v-if="error">
+              <button class="delete" @click="clearError"></button>
+              {{error}}
+            </div>
           </transition>
+          <router-view></router-view>
         </div>
       </section>
   </div>
@@ -51,5 +51,11 @@ export default {
 }
 .nav-item.is-active{
   border-bottom: #72d0eb 2px solid;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active для <2.1.8 */ {
+  opacity: 0
 }
 </style>
