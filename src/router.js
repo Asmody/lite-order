@@ -8,9 +8,9 @@ import Login from '@/pages/Login'
 Vue.use(VueRouter)
 
 export let routes = [
-  { path: '/catalog', name: 'Каталог', component: Catalog },
-  { path: '/orders', name: 'Заказы', component: Orders },
-  { path: '/login', component: Login, meta: { hidden: true }},
+  { path: '/catalog', name: 'Каталог', component: Catalog, meta: { requiresAuth: true } },
+  { path: '/orders', name: 'Заказы', component: Orders, meta: { requiresAuth: true }  },
+  { path: '/login', component: Login, meta: { hidden: true, auth: false } },
   { path: '/', redirect: '/catalog'}
 ]
 
@@ -23,7 +23,7 @@ routes.forEach( (route) => {
 const router = new VueRouter({
   routes,
   mode: 'history',
-  linkActiveClass: 'is-active'
+  linkActiveClass: 'is-active',
 })
 
 export default router

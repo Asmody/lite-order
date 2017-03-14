@@ -1,6 +1,6 @@
 import Firebase from 'firebase'
 
-const fireApp = Firebase.initializeApp({
+export const fireApp = Firebase.initializeApp({
   apiKey: "AIzaSyCkxjmh463PvobXORIvhq6rW4BLm1liVow",
   authDomain: "telco-lk.firebaseapp.com",
   databaseURL: "https://telco-lk.firebaseio.com",

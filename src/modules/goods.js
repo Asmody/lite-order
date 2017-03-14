@@ -1,8 +1,10 @@
+import _ from 'lodash'
+
 import db from '@/db'
 
 
  const goodsApi = {
-  getGoodsList ({orderBy, startAt, perPage}) {
+  getGoodsList ({orderBy, startAt, perPage, order}) {
     return new Promise ( (resolve, reject) => {
       let items=[]
       const goodsRef = db.ref('goods')
@@ -23,7 +25,12 @@ import db from '@/db'
               items.push( {
                 '.key': snap.key,
                 'price': vals[idx++],
-                'qty': 0,
+                'qty': (key => {
+                  return _.defaults(
+                    _.find(order, (e,k)=>k===key),
+                    {qty:0}
+                  )['qty']
+                })(snap.key),
                 ...snap.val()
               })
             })

@@ -16,7 +16,7 @@
         <td class="col-descr">{{good.description}}</td>
         <td class="col-price">{{good.price}}</td>
         <td class="col-qty">
-          <input class="input is-small" type="number" maxlength="10" v-model="good.qty" @input="(e)=>{updateQty(idx, e)}" />
+          <input class="input is-small" type="number" min="0" maxlength="10" v-model="good.qty" @input="(e)=>{updateQty(idx, e)}" />
         </td>
       </tr>
     </tbody>
@@ -25,7 +25,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import db from '@/db'
 
 export default {
   name: 'goods-list',
@@ -44,12 +43,12 @@ export default {
       if (val === NaN) {
         e.target.value = '0'
       } else {
-        this.updateCart({good:this.goods[idx], qty:val})
+        this.updateOrder({good:this.goods[idx], qty:val})
       }
     },
     ...mapActions([
         'loadGoodsList',
-        'updateCart'
+        'updateOrder'
     ])
   }
 }

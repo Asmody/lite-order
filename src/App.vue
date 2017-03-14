@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <template v-if="signedIn">
       <header>
         <nav class="nav has-shadow">
           <div class="nav-left">
@@ -20,6 +21,10 @@
           <router-view></router-view>
         </div>
       </section>
+    </template>
+    <template v-else>
+      <router-view></router-view>
+    </template>
   </div>
 </template>
 
@@ -35,13 +40,29 @@ export default {
     }
   },
   computed: mapGetters([
-    'error'
+    'error',
+    'signedIn'
   ]),
   methods: {
     ...mapActions([
       'clearError'
     ])
   },
+  beforeRouteEnter (to, from, next) {
+    console.log(to)
+    if (to.matched.some(r => r.meta.requiresAuth)) {
+      if (!this.signedIn) {
+        next({
+          path: '/login',
+          query: { redirect: to.fullpath }
+        })
+      } else {
+        next()
+      }
+    } else {
+      next()
+    }
+  }
 }
 </script>
 

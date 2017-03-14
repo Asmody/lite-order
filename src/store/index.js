@@ -3,7 +3,10 @@ import Vuex from 'vuex'
 import VuexFire from 'vuexfire'
 import db from '@/db'
 
+import _ from 'lodash'
+
 import dbGoods from '@/modules/goods'
+import dbAuth from '@/modules/auth'
 
 //import goods from './goods.js'
 
@@ -24,9 +27,13 @@ let store = new Vuex.Store({
 //      orderBy: '.key'
       orderBy: 'code'
     },
-    cart: [],
+    order: {},
     orders: [],
-    error: ''
+    error: '',
+    auth: {
+      user: '',
+      sess: null
+    },
   },
   mutations: {
     setError (state, error) {
@@ -64,6 +71,25 @@ let store = new Vuex.Store({
       state.goodsOptions.lastPage = false
       state.goodsOptions.currentPage = 1
     },
+    updateOrder (state, {good, qty}) {
+      Vue.set(state.order,
+        good['.key'],
+        {
+          good: good,
+          price: good.price,
+          qty: qty,
+        }
+      )
+    },
+    clearOrder (state) {
+      state.order = {}
+    },
+    signIn (state) {
+
+    },
+    signOut (state) {
+      Vue.set(state, 'auth', { user: '', sess: null})
+    },
     ...VuexFire.mutations
   },
   actions: {
@@ -78,7 +104,8 @@ let store = new Vuex.Store({
       dbGoods.getGoodsList({
         orderBy: state.goodsOptions.orderBy,
         startAt: state.goodsOptions.lastKey,
-        perPage: state.goodsOptions.perPage
+        perPage: state.goodsOptions.perPage,
+        order: state.order
       })
       .then(items => {
         commit('loadGoodsList', items)
@@ -104,14 +131,41 @@ let store = new Vuex.Store({
         dispatch('loadGoodsList')
       }
     },
-    updateCart ({dispatch, commit, state}, {good, qty}) {
-      console.log(good, qty)
+    updateOrder ({dispatch, commit, state}, {good, qty}) {
+      // console.log(good, qty)
+      commit('updateOrder', {good, qty})
+    },
+    clearOrder ({commit}) {
+      commit('clearOrder')
+    },
+    signIn ({commit}, {email, pass}) {
+      dbAuth.signIn({email, pass}).then(r => {
+        console.log(r)
+        commit('signIn', r )
+      })
+      .catch(err => {
+        dispatch('setError', err)
+      })
+    },
+    signOut ({commit}) {
+      dbAuth.signOut().then(r => {
+        commit('signOut')
+      })
     }
   },
   getters: {
     error: state => state.error,
     goods: state => state.goodsList,
-    goodsOptions: state => state.goodsOptions
+    goodsOptions: state => state.goodsOptions,
+    order: state => state.order,
+    orderTotal: state => {
+      return Math.round(
+        _.reduce(state.order, (total, item, key) => {
+          return total + Math.round(item.price * item.qty * 100) / 100
+        }, 0) * 100) / 100
+    },
+    auth: state => state.auth,
+    signedIn: state => true && state.auth.sess,
   }
 })
 

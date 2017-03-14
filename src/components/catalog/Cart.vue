@@ -13,19 +13,30 @@
     </div>
     <div class="card-footer">
       <a class="card-footer-item">Оформить</a>
-      <a class="card-footer-item">Очистить</a>
+      <a class="card-footer-item" @click="clearOrder">Очистить</a>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'cart',
   data () {
     return {
       showOrder: false,
-      total: 1000
     }
   },
+  computed: {
+    ...mapGetters({
+      total: 'orderTotal'
+    })
+  },
+  methods: {
+    ...mapActions([
+      'clearOrder'
+    ])
+  }
 }
 </script>
