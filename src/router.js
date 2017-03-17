@@ -1,17 +1,33 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Catalog from '@/pages/Catalog'
-import Orders from '@/pages/Orders'
-import Login from '@/pages/Login'
-
 Vue.use(VueRouter)
 
 export let routes = [
-  { path: '/catalog', name: 'Каталог', component: Catalog, meta: { requiresAuth: true } },
-  { path: '/orders', name: 'Заказы', component: Orders, meta: { requiresAuth: true }  },
-  { path: '/login', component: Login, meta: { hidden: true, auth: false } },
-  { path: '/', redirect: '/catalog'}
+  { path: '/', redirect: '/catalog' },
+  {
+    path: '/catalog',
+    name: 'Каталог',
+    component (resolve) => {
+      require(['./pages/Catalog.vue'], resolve)
+    },
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/orders',
+    name: 'Заказы',
+    component (resolve) => {
+      require(['./pages/Orders.vue'], resolve)
+    },
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/login',
+    component (resolve) => {
+      require(['/pages/Login.vue'], resolve)
+    },
+    meta: { hidden: true, auth: false }
+  },
 ]
 
 routes.forEach( (route) => {
@@ -21,9 +37,22 @@ routes.forEach( (route) => {
 })
 
 const router = new VueRouter({
-  routes,
   mode: 'history',
+  routes,
   linkActiveClass: 'is-active',
+  beforeEach: beforeGuard
 })
+
+function beforeGuard (to, from, next) {
+  const auth = router.app.$options.store.auth
+  if (to.meta.requiresAuth && !auth.isLoggedIn) {
+    next({
+      path: '/login',
+      query: { redirect: to.fullPath }
+    })
+  } else {
+    next()
+  }
+}
 
 export default router
