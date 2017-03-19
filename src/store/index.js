@@ -8,11 +8,6 @@ import * as actions from './actions'
 import * as getters from './getters'
 import plugins from './plugins'
 
-import db from '@/db'
-
-import dbGoods from '@/modules/goods'
-import dbAuth from '@/modules/auth'
-
 //import goods from './goods.js'
 
 Vue.use(Vuex)
