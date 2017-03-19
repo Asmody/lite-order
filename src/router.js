@@ -8,23 +8,23 @@ export let routes = [
   {
     path: '/catalog',
     name: 'Каталог',
-    component (resolve) => {
-      require(['./pages/Catalog.vue'], resolve)
+    component (resolve) {
+      require(['@/pages/Catalog.vue'], resolve)
     },
     meta: { requiresAuth: true }
   },
   {
     path: '/orders',
     name: 'Заказы',
-    component (resolve) => {
-      require(['./pages/Orders.vue'], resolve)
+    component (resolve) {
+      require(['@/pages/Orders.vue'], resolve)
     },
     meta: { requiresAuth: true }
   },
   {
     path: '/login',
-    component (resolve) => {
-      require(['/pages/Login.vue'], resolve)
+    component (resolve) {
+      require(['@/pages/Login.vue'], resolve)
     },
     meta: { hidden: true, auth: false }
   },
