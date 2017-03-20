@@ -1,9 +1,7 @@
 
 import router from '@/router'
 
-import dbGoods from '@/modules/goods'
-import dbAuth from '@/modules/auth'
-
+import db from '@/modules/db'
 
 export const setError = ({commit}, error) => {
   commit('SET_ERROR', error)
@@ -13,14 +11,39 @@ export const clearError = ({commit}) => {
   commit('CLEAR_ERROR')
 }
 
-export const loadGoodsList = ({commit, state}) => {
-  dbGoods.getGoodsList({
-    orderBy: state.goods.options.orderBy,
-    startAt: state.goods.options.lastKey,
-    perPage: state.goods.options.perPage,
-    order: state.order
+export const loadDb = ({commit, dispatch, state}) => {
+  db.getGoods({orderBy: state.goods.options.orderBy})
+  .then(goods => {
+    return db.getPrices()
   })
-  .then(items => {
+  .then(prices => {
+    return commit('LOAD_DB', {goods, prices})
+  })
+  .catch(error => {
+    dispatch('setError', error.message)
+  })
+}
+
+export const loadGoodsList = ({commit, dispatch, state}) => {
+  let perPage = state.goods.options.perPage || 20
+  let currentPage = state.goods.options.currentPage || 1
+
+  let pr = new Promise((resolve, reject) => {
+    if (state.db.goods.length == 0) {
+      resolve(dispatch('loadDb'))
+    } else {
+      resolve(true)
+    }
+  })
+  pr.then((some) => {
+    let _goods = _.slice(state.db.goods, (currentPage-1)*perPage, perPage)
+    let items= _.map(_goods, el => {
+      return {
+        ...el,
+        price: _.find(state.db.prices, pr => pr['.key']===el['.key']),
+        qty: _.get(state.order, [el['.key'], 'qty'], 0)
+      }
+    })
     commit('LOAD_GOODS_LIST', items)
   })
   .catch(error => {

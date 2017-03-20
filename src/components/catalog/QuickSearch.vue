@@ -15,8 +15,15 @@ export default {
       search: ''
     }
   },
+  watch: {
+    search (newSearch) {
+      this.makeSeatch()
+    }
+  },
   methods: {
-
+    makeSeatch: _.debounce( () => {
+      
+    }, 500)
   }
 }
 </script>

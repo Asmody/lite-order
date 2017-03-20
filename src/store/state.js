@@ -16,7 +16,10 @@ if (localStorage.getItem(STORAGE_KEY)) {
     }
   }
 }
-
+initialState.db = {
+  goods: [],
+  prises: []
+}
 initialState.goods = {
   list: [],
   options: {

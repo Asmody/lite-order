@@ -7,13 +7,12 @@ export const CLEAR_ERROR = (state) => {
   state.error = ''
 }
 
+export const LOAD_DB = (state, {goods, prices}) => {
+  Vue.set(state.db, 'goods', goods)
+  Vue.set(state.db, 'prices', prices)
+}
 export const LOAD_GOODS_LIST = (state, items) => {
   state.goods.list = items
-  if (items.length > 0) {
-    state.goods.options.lastKey = items.slice(-1)[0][state.goods.options.orderBy]
-  } else {
-    state.goods.options.lastKey = ''
-  }
 }
 export const SET_ORDER_LIST_LAST_PAGE = (state) => {
   if (!state.goods.options.lastPage) {
