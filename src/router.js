@@ -26,7 +26,14 @@ export let routes = [
     component (resolve) {
       require(['@/pages/Login.vue'], resolve)
     },
-    meta: { hidden: true, auth: false }
+    meta: { hidden: true, requiresAuth: false }
+  },
+  {
+    path: '/profile',
+    component (resolve) {
+      require(['@/pages/Profile.vue'], resolve)
+    },
+    meta: { hidden: true, requiresAuth: true }
   },
 ]
 
@@ -39,12 +46,15 @@ routes.forEach( (route) => {
 const router = new VueRouter({
   mode: 'history',
   routes,
-  linkActiveClass: 'is-active',
-  beforeEach: beforeGuard
+  linkActiveClass: 'is-active'
 })
 
-function beforeGuard (to, from, next) {
-  const auth = router.app.$options.store.auth
+router.beforeEach( (to, from, next) => {
+  const auth = router.app.$options.store.state.auth
+  const user = router.app.$options.store.state.user
+  
+  console.log('User: '+user.email )
+  console.log('Logged in: '+auth.isLoggedIn )
   if (to.meta.requiresAuth && !auth.isLoggedIn) {
     next({
       path: '/login',
@@ -53,6 +63,6 @@ function beforeGuard (to, from, next) {
   } else {
     next()
   }
-}
+})
 
 export default router

@@ -4,6 +4,9 @@ import Vue from 'vue'
 import router from '@/router'
 import store from '@/store'
 
+import Auth from '@/auth'
+Vue.use(Auth)
+
 import '@/assets/style/app.scss'
 
 import { icon } from 'vue-fontawesome'

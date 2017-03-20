@@ -1,7 +1,7 @@
 export const error = state => state.error
 
 export const auth = state => state.auth
-export const isLoggedIn = state => true && state.auth.session
+export const isLoggedIn = state => state.auth.isLoggedIn
 
 export const user = state => state.user
 

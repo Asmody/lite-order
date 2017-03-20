@@ -1,23 +1,10 @@
 <template>
   <div id="app">
-    <template v-if="signedIn">
-      <header>
-        <nav class="nav has-shadow">
-          <div class="nav-left">
-            <router-link class="nav-item" v-for="(route,idx) in routes" :key="idx" v-if="route.name && !route.meta.hidden" :to="route.path">
-              {{ route.name }}
-            </router-link>
-          </div>
-        </nav>
-      </header>
+    <template v-if="isLoggedIn">
+      <app-nav></app-nav>
       <section class="section">
         <div class="container is-fluid">
-          <transition name="fade">
-            <div class="notification is-danger" v-if="error">
-              <button class="delete" @click="clearError"></button>
-              {{error}}
-            </div>
-          </transition>
+          <error-msg></error-msg>
           <router-view></router-view>
         </div>
       </section>
@@ -25,54 +12,45 @@
     <template v-else>
       <router-view></router-view>
     </template>
+    <app-footer></app-footer>
   </div>
 </template>
 
 <script>
-import { routes } from '@/router'
 import { mapGetters, mapActions } from 'vuex'
+
+import AppNav from './AppNav'
+import AppFooter from './AppFooter'
+import ErrorMsg from './ErrorMsg'
 
 export default {
   name: 'app',
   data () {
     return {
-      routes,
     }
+  },
+  components: {
+    AppNav,
+    AppFooter,
+    ErrorMsg
   },
   computed: mapGetters([
-    'error',
-    'signedIn'
+    'isLoggedIn'
   ]),
   methods: {
-    ...mapActions([
-      'clearError'
-    ])
-  },
-  beforeRouteEnter (to, from, next) {
-    console.log(to)
-    if (to.matched.some(r => r.meta.requiresAuth)) {
-      if (!this.signedIn) {
-        next({
-          path: '/login',
-          query: { redirect: to.fullpath }
-        })
-      } else {
-        next()
-      }
-    } else {
-      next()
-    }
   }
 }
 </script>
 
 <style lang="scss">
-.nav-item{
-  text-transform: uppercase;
+html{
+  position: relative;
+  min-height: 100%;
 }
-.nav-item.is-active{
-  border-bottom: #72d0eb 2px solid;
+body{
+  margin-bottom: 60px;
 }
+
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s
 }

@@ -1,12 +1,13 @@
 
-import db from '@/db'
+import router from '@/router'
 
 import dbGoods from '@/modules/goods'
 import dbAuth from '@/modules/auth'
 
+
 export const setError = ({commit}, error) => {
   commit('SET_ERROR', error)
-  setTimeout(() => {commit('clearError')}, 2000)
+  setTimeout(() => {commit('CLEAR_ERROR')}, 5000)
 }
 export const clearError = ({commit}) => {
   commit('CLEAR_ERROR')
@@ -14,15 +15,15 @@ export const clearError = ({commit}) => {
 
 export const loadGoodsList = ({commit, state}) => {
   dbGoods.getGoodsList({
-    orderBy: state.goodsOptions.orderBy,
-    startAt: state.goodsOptions.lastKey,
-    perPage: state.goodsOptions.perPage,
+    orderBy: state.goods.options.orderBy,
+    startAt: state.goods.options.lastKey,
+    perPage: state.goods.options.perPage,
     order: state.order
   })
   .then(items => {
     commit('LOAD_GOODS_LIST', items)
   })
-  .catch(err => {
+  .catch(error => {
     console.error(error)
     commit('SET_ERROR', error)
   })
@@ -56,17 +57,18 @@ export const clearOrder = ({commit}) => {
   commit('CLEAR_ORDER')
 }
 
-export const signIn  = ({commit}, {email, pass}) => {
-  dbAuth.signIn({email, pass}).then(r => {
-    console.log(r)
-    commit('SIGN_IN', r )
+export const signIn = ({dispatch, commit}, {email, pass, redirect}) => {
+  dbAuth.signIn({email, pass}).then(token => {
+    commit('SIGN_IN', {email, pass, token})
+    router.push(redirect)
   })
   .catch(err => {
-    dispatch('SET_ERROR', err)
+    dispatch('setError', err.message)
   })
 }
 export const signOut = ({commit}) => {
   dbAuth.signOut().then(r => {
     commit('SIGN_OUT')
+    router.push({ path: '/' })
   })
 }
