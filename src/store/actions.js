@@ -12,11 +12,13 @@ export const clearError = ({commit}) => {
 }
 
 export const loadDb = ({commit, dispatch, state}) => {
-  db.getGoods({orderBy: state.goods.options.orderBy})
-  .then(goods => {
-    return db.getPrices()
-  })
-  .then(prices => {
+  return Promise.all([
+    db.getGoods({orderBy: state.goods.options.orderBy}),
+    db.getPrices()
+  ])
+  .then(result => {
+    let goods = result[0]
+    let prices = result[1]
     return commit('LOAD_DB', {goods, prices})
   })
   .catch(error => {
@@ -40,7 +42,7 @@ export const loadGoodsList = ({commit, dispatch, state}) => {
     let items= _.map(_goods, el => {
       return {
         ...el,
-        price: _.find(state.db.prices, pr => pr['.key']===el['.key']),
+        price: _.get(_.find(state.db.prices, pr => pr['.key']===el['.key']), 'price', 0),
         qty: _.get(state.order, [el['.key'], 'qty'], 0)
       }
     })

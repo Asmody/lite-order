@@ -22,9 +22,12 @@ initialState.db = {
 }
 initialState.goods = {
   list: [],
+  nav: {
+    pages: 0,
+    currentPage: 0
+  },
   options: {
     perPage: 10,
-    currentPage: 1,
     lastKey: '',
     lastPage: false,
 //      orderBy: '.key'

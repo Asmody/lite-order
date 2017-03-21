@@ -1,25 +1,19 @@
 import db from '@/db'
 
-const getCollection = (collection, orderBy) => {
+const getCollection = (collection, orderBy, makeItem) => {
   return new Promise ( (resolve, reject) => {
     let items=[]
     const goodsRef = db.ref(collection)
     let method = orderBy == '.key' ? 'orderByKey' : 'orderByChild'
     let methParams = orderBy == '.key' ? [] : [orderBy]
     const query = goodsRef[method].apply(goodsRef, methParams)
-    query.off()
-    query.on('value', 
+    query.once('value', 
     (snapshot) => {
-      snapshot.forEach( snap => {
-        items.push( {
-          '.key': snap.key,
-          ...snap.val()
-        })
-      })
-      resolve(items)
+      let snapVal = snapshot.val()
+      resolve(_.map(snapVal, makeItem))
     },
     (error) => {
-      console.error(error)
+      console.error('DBError:' + error)
       reject(error)
     })
   })
@@ -27,9 +21,19 @@ const getCollection = (collection, orderBy) => {
 
 export default {
   getGoods ({orderBy}) {
-    return getCollection('goods', orderBy)
+    return getCollection('goods', orderBy, (item, key) => {
+      return {
+        '.key': key,
+        ...item
+      }
+    })
   },
   getPrices () {
-    return getCollection('prices', '.key')
+    return getCollection('prices', '.key', (item, key) => {
+      return {
+        '.key': key,
+        'price': item
+      }
+    })
   }
 }

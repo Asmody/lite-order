@@ -10,6 +10,10 @@ export const CLEAR_ERROR = (state) => {
 export const LOAD_DB = (state, {goods, prices}) => {
   Vue.set(state.db, 'goods', goods)
   Vue.set(state.db, 'prices', prices)
+  // Goods nav
+  const perPage = state.goods.options.perPage
+  const items = goods.length
+  state.goods.nav.pages = (items % perPage == 0 ? items/perPage : Math.floor(items/perPage)+1)
 }
 export const LOAD_GOODS_LIST = (state, items) => {
   state.goods.list = items
