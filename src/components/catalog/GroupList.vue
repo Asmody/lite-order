@@ -6,16 +6,33 @@
         <span class="icon is-small"><vf-icon icon="search" fixed></vf-icon></span>
       </p>
     </div>
-    <a class="panel-block">Группа 1</a>
-    <a class="panel-block">Группа 2</a>
-    <a class="panel-block">Группа 3</a>
-    <a class="panel-block">Группа 4</a>
+    <a class="panel-block" v-for="group in groups" :key="group['.key']">{{group.name}}</a>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'group-list',
+  data () {
+    return {
+
+    }
+  },
+  beforeMount () {
+    this.loadGroupsList()
+  },
+  computed: {
+    ...mapGetters([
+      'groups'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'loadGroupsList'
+    ])
+  }
 }
 
 </script>

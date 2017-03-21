@@ -18,29 +18,31 @@ if (localStorage.getItem(STORAGE_KEY)) {
 }
 initialState.db = {
   goods: [],
-  prises: []
+  prices: {},
+  goodsGroups: {}
 }
 initialState.goods = {
   list: [],
   nav: {
     pages: 0,
-    currentPage: 0
+    currentPage: 1
   },
   options: {
-    perPage: 10,
+    perPage: 13,
     lastKey: '',
     lastPage: false,
 //      orderBy: '.key'
     orderBy: 'code'
   }
 }
-
+initialState.groups = {
+  list: []
+}
 initialState.orders = {
   list: []
 }
 initialState.order = {}
 initialState.error = ''
-
-console.log(initialState)
+initialState.loading = true
 
 export const state = initialState

@@ -14,22 +14,19 @@ export const clearError = ({commit}) => {
 export const loadDb = ({commit, dispatch, state}) => {
   return Promise.all([
     db.getGoods({orderBy: state.goods.options.orderBy}),
-    db.getPrices()
+    db.getPrices(),
+    db.getGroups()
   ])
   .then(result => {
-    let goods = result[0]
-    let prices = result[1]
-    return commit('LOAD_DB', {goods, prices})
+    let [goods, prices, groups] = result
+    return commit('LOAD_DB', {goods, prices, groups})
   })
   .catch(error => {
     dispatch('setError', error.message)
   })
 }
 
-export const loadGoodsList = ({commit, dispatch, state}) => {
-  let perPage = state.goods.options.perPage || 20
-  let currentPage = state.goods.options.currentPage || 1
-
+export const loadGoodsList = ({dispatch, commit, state}) => {
   let pr = new Promise((resolve, reject) => {
     if (state.db.goods.length == 0) {
       resolve(dispatch('loadDb'))
@@ -38,11 +35,13 @@ export const loadGoodsList = ({commit, dispatch, state}) => {
     }
   })
   pr.then((some) => {
-    let _goods = _.slice(state.db.goods, (currentPage-1)*perPage, perPage)
+    let perPage = state.goods.options.perPage
+    let currentPage = state.goods.nav.currentPage
+    let _goods = _.slice(state.db.goods, (currentPage-1)*perPage, currentPage*perPage)
     let items= _.map(_goods, el => {
       return {
         ...el,
-        price: _.get(_.find(state.db.prices, pr => pr['.key']===el['.key']), 'price', 0),
+        price: _.get(state.db.prices, el['.key'], 0),
         qty: _.get(state.order, [el['.key'], 'qty'], 0)
       }
     })
@@ -50,9 +49,34 @@ export const loadGoodsList = ({commit, dispatch, state}) => {
   })
   .catch(error => {
     console.error(error)
-    commit('SET_ERROR', error)
+    dispatch('setError', error.message)
   })
 }
+
+export const loadGroupsList = ({dispatch, commit, state}) => {
+  let pr = new Promise((resolve, reject) => {
+    if (state.db.goods.length == 0) {
+      resolve(dispatch('loadDb'))
+    } else {
+      resolve(true)
+    }
+  })
+  pr.then((some) => {
+    let _groups = state.db.goodsGroups
+    let items = _.map(_groups, (el, key) => {
+      return {
+        '.key': key,
+        'name': el
+      }
+    })
+    commit('LOAD_GROUPS_LIST', items)
+  })
+  .catch(error => {
+    console.error(error)
+    dispatch('setError', error.message)
+  })
+}
+
 export const setOrderListLastPage = ({dispatch, commit, state}) => {
   commit('SET_ORDER_LIST_LAST_PAGE')
   dispatch('loadGoodsList')
@@ -62,13 +86,13 @@ export const setOrderListNextPage = ({dispatch, commit, state}) => {
   dispatch('loadGoodsList')
 }
 export const setOrderListPrevPage = ({dispatch, commit, state}) => {
-  if (state.goodsOptions.currentPage > 1) {
+  if (state.goods.nav.currentPage > 1) {
     commit('SET_ORDER_LIST_PREV_PAGE')
     dispatch('loadGoodsList')
   }
 }
 export const setOrderListFirstPage = ({dispatch, commit, state}) => {
-  if (state.goodsOptions.currentPage > 1) {
+  if (state.goods.nav.currentPage > 1) {
     commit('SET_ORDER_LIST_FIRST_PAGE')
     dispatch('loadGoodsList')
   }
@@ -96,4 +120,8 @@ export const signOut = ({commit}) => {
     commit('SIGN_OUT')
     router.push({ path: '/' })
   })
+}
+
+export const setLoading = ({commit}, loading) => {
+  commit('SET_LOADING', loading)
 }

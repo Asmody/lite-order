@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <spinner v-if="loading"></spinner>
     <template v-if="isLoggedIn">
       <app-nav></app-nav>
       <section class="section">
@@ -22,6 +23,7 @@ import { mapGetters, mapActions } from 'vuex'
 import AppNav from './AppNav'
 import AppFooter from './AppFooter'
 import ErrorMsg from './ErrorMsg'
+import Spinner from './Spinner'
 
 export default {
   name: 'app',
@@ -32,10 +34,12 @@ export default {
   components: {
     AppNav,
     AppFooter,
-    ErrorMsg
+    ErrorMsg,
+    Spinner
   },
   computed: mapGetters([
-    'isLoggedIn'
+    'isLoggedIn',
+    'loading'
   ]),
   methods: {
   }
@@ -45,12 +49,16 @@ export default {
 <style lang="scss">
 html{
   position: relative;
-  min-height: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 body{
   margin-bottom: 60px;
+  height: 100%;
 }
-
+#app{
+  height: 100%;
+}
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s
 }

@@ -1,5 +1,5 @@
 <template>
-  <table id="goods-list" class="table is-striped">
+  <table id="goods-list" class="table is-striped is-scroll">
     <thead>
       <tr>
         <th class="col-code">Код</th>
@@ -10,7 +10,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(good,idx) in goods" :key="good['.key']">
+      <tr v-for="(good,idx) in goods" :key="good['.key']" :class="{'in-order':good.qty>0}">
         <td class="col-code">{{good.code}}</td>
         <td class="col-brand">{{good.brand}}</td>
         <td class="col-descr">{{good.description}}</td>
@@ -55,9 +55,23 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #goods-list{
   table-layout: fixed;
+}
+.is-scroll{
+  tbody{
+    display: block;
+    max-height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  tr{
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+  }
 }
 .col-code, .col-brand{
   width:10%;
@@ -73,5 +87,8 @@ td.col-price{
 }
 .col-qty{
   width:15%;
+}
+tr.in-order{
+  font-weight: bold;
 }
 </style>

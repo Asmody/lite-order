@@ -13,9 +13,9 @@
           </div>
         </div>
       </div>
-      <div class="tale is-ancestor">
-        <div class="tale is-vertical is-12">
-          <div class="tale box">
+      <div class="tile is-ancestor">
+        <div class="tile is-vertical is-parent">
+          <div class="tile is-child">
             <goods-list></goods-list>
           </div>
         </div>
@@ -60,3 +60,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+
+</style>
