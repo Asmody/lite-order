@@ -1,7 +1,7 @@
 <template>
-  <div class="tile is-ancestor">
-    <div class="tile is-parent is-vertical is-9">
-      <div class="tile is-child">
+  <div class="catalog">
+    <div class="columns">
+      <div class="column is-9">
         <div class="level">
           <div class="level-left">
             <div class="level-item">
@@ -14,23 +14,18 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="tile is-child">
-        <goods-list></goods-list>
-      </div>
-    </div>
-    <div class="tile is-parent is-vertical">
-      <div class="tile is-child">
-        <cart></cart>
-      </div>
-      <div class="tile is-child">
-        <div id="group-list">
-        <group-list></group-list>
+        <div class="goods-list-wrap">
+          <goods-list></goods-list>
         </div>
+      </div>
+      <div class="column">
+          <cart></cart>
+          <div class="group-list-wrap">
+            <group-list></group-list>
+          </div>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -39,7 +34,7 @@ import Pagination from '@/components/catalog/Pagination'
 import GoodsList from '@/components/catalog/GoodsList'
 import Cart from '@/components/catalog/Cart'
 import GroupList from '@/components/catalog/GroupList'
-
+import Order from '@/components/catalog/Order'
 
 export default {
   name: 'catalog',
@@ -52,15 +47,22 @@ export default {
     Pagination,
     GoodsList,
     Cart,
-    GroupList
+    GroupList,
+    Order
   }
 }
 </script>
 
 <style lang="scss">
-#group-list{
-  flex: 1 1 auto;
-  height: 1px;
+.goods-list-wrap{
+  height: 76vh;
   overflow-y: auto;
+/*  border: 1px red solid; */
+}
+.group-list-wrap{
+  margin-top: 10px;
+  height: 71vh;
+  overflow-y: auto;
+/*  border: 1px red solid; */
 }
 </style>

@@ -24,6 +24,15 @@ const getCollection = (collection, orderBy) => {
   })
 }
 
+const pushInto = (collection, item) => {
+  return new Promise ( (resolve, reject) => {
+    const dbRef = db.ref(collection)
+    dbRef.push(item, response => {
+      resolve(response)
+    })
+  })
+}
+
 export default {
   getGoods ({orderBy}) {
     return getCollection('goods', orderBy)
@@ -40,10 +49,28 @@ export default {
   },
   getPrices () {
     return getCollection('prices')
-    .then(snap => snap.val())
+    .then(snap => {
+      let items = {}
+      snap.forEach(item => {
+        items[item.key] = Math.round(item.val() * 100) / 100
+      })
+      return items
+    })
   },
   getGroups () {
     return getCollection('goods-groups', '.value')
-    .then(snap => snap.val())
+    .then(snap => {
+      let items = []
+      snap.forEach(item => {
+        items.push({
+          '.key': item.key,
+          'name': item.val()
+        })
+      })
+      return items
+    })
+  },
+  newOrder(order) {
+
   }
 }

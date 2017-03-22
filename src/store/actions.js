@@ -40,12 +40,13 @@ export const loadGoodsList = ({dispatch, commit, state}) => {
   pr.then((some) => {
     let perPage = state.goods.options.perPage
     let currentPage = state.goods.nav.currentPage
-    let _goods = _.slice(state.db.goods, (currentPage-1)*perPage, currentPage*perPage)
+    let goodsDbList = (state.goods.filtered.length ? state.goods.filtered : state.db.goods )
+    let _goods = _.slice(goodsDbList, (currentPage-1)*perPage, currentPage*perPage)
     let items= _.map(_goods, el => {
       return {
         ...el,
         price: _.get(state.db.prices, el['.key'], 0),
-        qty: _.get(state.order, [el['.key'], 'qty'], 0)
+        qty: _.get(state.order.items, [el['.key'], 'qty'], 0)
       }
     })
     commit('LOAD_GOODS_LIST', items)
@@ -54,6 +55,16 @@ export const loadGoodsList = ({dispatch, commit, state}) => {
     console.error(error)
     dispatch('setError', error.message)
   })
+}
+
+export const setGoodsFilter = ({dispatch, commit, state}, filter) => {
+  commit('SET_GOODS_FILTER', filter)
+  dispatch('loadGoodsList')
+}
+
+export const clearGoodsFilter = ({dispatch, commit, state}) => {
+  commit('SET_GOODS_FILTER', '')
+  dispatch('loadGoodsList')
 }
 
 export const loadGroupsList = ({dispatch, commit, state}) => {
@@ -66,18 +77,33 @@ export const loadGroupsList = ({dispatch, commit, state}) => {
   })
   pr.then((some) => {
     let _groups = state.db.goodsGroups
-    let items = _.map(_groups, (el, key) => {
-      return {
-        '.key': key,
-        'name': el
-      }
-    })
+    let items = _groups
     commit('LOAD_GROUPS_LIST', items)
   })
   .catch(error => {
     console.error(error)
     dispatch('setError', error.message)
   })
+}
+
+export const setGroupsFilter = ({dispatch, commit, state}, filter) => {
+  commit('SET_GROUPS_FILTER', filter)
+  dispatch('loadGroupsList')
+}
+
+export const clearGroupsFilter = ({dispatch, commit, state}) => {
+  commit('SET_GROUPS_FILTER', '')
+  dispatch('loadGroupsList')
+}
+
+export const addSelectedGroup = ({dispatch, commit, state}, group) => {
+  commit('ADD_SELECTED_GROUP', group)
+  dispatch('loadGoodsList')
+}
+
+export const removeSelectedGroup = ({dispatch, commit, state}, group) => {
+  commit('REMOVE_SELECTED_GROUP', group)
+  dispatch('loadGoodsList')
 }
 
 export const setOrderListLastPage = ({dispatch, commit, state}) => {
@@ -107,6 +133,9 @@ export const updateOrder = ({dispatch, commit, state}, {good, qty}) => {
 }
 export const clearOrder = ({commit}) => {
   commit('CLEAR_ORDER')
+}
+export const saveOrder = ({dispatch, commit, state}) => {
+
 }
 
 export const signIn = ({dispatch, commit}, {email, pass, redirect}) => {

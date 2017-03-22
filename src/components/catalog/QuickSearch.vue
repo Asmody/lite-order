@@ -1,13 +1,18 @@
 <template>
   <p class="control has-addons">
     <input v-model="search" class="input" type="text" placeholder="код или наименование" />
-    <button class="button">
+    <button class="button" @click="makeSeatch">
       <vf-icon icon="search" fixed />
+    </button>
+    <button class="button" @click="clearSearch">
+      <vf-icon icon="times" fixed />
     </button>
   </p>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'quick-search',
   data () {
@@ -21,9 +26,21 @@ export default {
     }
   },
   methods: {
-    makeSeatch: _.debounce( () => {
-      
-    }, 500)
+    makeSeatch () {
+      if (this.search.length > 2) {
+        this.setGoodsFilter(this.search)
+      } else if (!this.search) {
+        this.clearGoodsFilter()
+      }
+    },
+    clearSearch () {
+      this.search = ''
+      this.clearGoodsFilter()
+    },
+    ...mapActions([
+      'setGoodsFilter',
+      'clearGoodsFilter'
+    ])
   }
 }
 </script>

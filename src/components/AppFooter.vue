@@ -10,13 +10,14 @@
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+$footerHeight: 60px;
 footer{
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
-  height: 60px;
-  line-height: 60px;
+  height: $footerHeight;
+  line-height: $footerHeight;
   background: #f5f5f5;
 }
 </style>

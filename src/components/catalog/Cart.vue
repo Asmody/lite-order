@@ -1,24 +1,25 @@
 <template>
-  <div class="card">
-    <div class="card-header">
-      <p class="card-header-title">
-        Заказ на {{total}} <vf-icon icon="rub" fixed></vf-icon>
-      </p>
-      <a class="card-header-icon" @click="showOrder = !showOrder">
-        <vf-icon icon="angle-down" />
-      </a>
+  <div class="cart">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-header-icon" >
+          <vf-icon icon="shopping-cart"></vf-icon>
+        </span>
+        <p class="card-header-title">
+          {{total}}
+        </p>
+      </div>
+      <div class="card-footer">
+        <a class="card-footer-item" @click="showOrder=true">Оформить</a>
+        <a class="card-footer-item" @click="clearOrder">Очистить</a>
+      </div>
     </div>
-    <div class="card-content" :class="{  'is-hidden': !showOrder }">
-      Заказ пуст
-    </div>
-    <div class="card-footer">
-      <a class="card-footer-item">Оформить</a>
-      <a class="card-footer-item" @click="clearOrder">Очистить</a>
-    </div>
+    <order :is-active="showOrder" @close="showOrder=false"></order>
   </div>
 </template>
 
 <script>
+import Order from './Order'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -27,6 +28,9 @@ export default {
     return {
       showOrder: false,
     }
+  },
+  components: {
+    Order
   },
   computed: {
     ...mapGetters({

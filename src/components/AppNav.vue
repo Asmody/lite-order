@@ -47,6 +47,12 @@ export default {
 </script>
 
 <style lang="scss">
+header{
+  width: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
 .nav-item{
   text-transform: uppercase;
 }

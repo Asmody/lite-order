@@ -7,25 +7,69 @@ export const CLEAR_ERROR = (state) => {
   state.error = ''
 }
 
+export const RECALC_GOODS_NAV = (state, goodsLength) => {
+  const perPage = state.goods.options.perPage
+  const goodsCount = goodsLength || state.db.goods.length
+  state.goods.nav.pages = (goodsCount % perPage == 0 ? goodsCount/perPage : Math.floor(goodsCount/perPage)+1)
+  if (state.goods.nav.pages > 0) {
+    state.goods.nav.currentPage = 1
+  }
+}
+
 export const LOAD_DB = (state, {goods, prices, groups}) => {
   Vue.set(state.db, 'goods', goods)
   Vue.set(state.db, 'prices', prices)
   Vue.set(state.db, 'goodsGroups', groups)
 
   // Goods nav
-  const perPage = state.goods.options.perPage
-  const goodsCount = goods.length
-  state.goods.nav.pages = (goodsCount % perPage == 0 ? goodsCount/perPage : Math.floor(goodsCount/perPage)+1)
-  if (state.goods.nav.pages > 0) {
-    state.goods.nav.currentPage = 1
-  }
+  RECALC_GOODS_NAV(state, goods.length)
 }
 export const LOAD_GOODS_LIST = (state, items) => {
   Vue.set(state.goods, 'list', items)
 }
 
+export const FILTER_GOODS = (state) => {
+  if (state.goods.filter || state.groups.selected.length) {
+    state.goods.filtered = _.filter(state.db.goods, el => {
+      return (!state.goods.filter
+          || el.description.toLowerCase().indexOf(state.goods.filter) != -1
+          || el.code.toLowerCase().indexOf(state.goods.filter) != -1)
+      && (!state.groups.selected.length
+          || _.some(state.groups.selected, gr => gr['.key'] == el['groupRef'] ))
+    })
+  } else {
+    state.goods.filtered = []
+  }
+  RECALC_GOODS_NAV(state, state.goods.filtered.length)
+}
+
+export const SET_GOODS_FILTER = (state, filter) => {
+  state.goods.filter = filter.toLowerCase()
+  FILTER_GOODS(state)
+}
+
 export const LOAD_GROUPS_LIST = (state, items) => {
-  Vue.set(state.groups, 'list', items)
+  if (state.groups.filter) {
+    Vue.set(state.groups, 'list', _.filter(items, el => {
+      return el.name.toLowerCase().indexOf(state.groups.filter) != -1
+    }))
+  } else {
+    Vue.set(state.groups, 'list', items)
+  }
+}
+
+export const SET_GROUPS_FILTER = (state, filter) => {
+  state.groups.filter = filter
+}
+
+export const ADD_SELECTED_GROUP = (state, group) => {
+  state.groups.selected = _.union(state.groups.selected, [group])
+  FILTER_GOODS(state)
+}
+
+export const REMOVE_SELECTED_GROUP = (state, group) => {
+  state.groups.selected = _.xor(state.groups.selected, [group])
+  FILTER_GOODS(state)
 }
 
 export const SET_ORDER_LIST_LAST_PAGE = (state) => {
@@ -48,7 +92,7 @@ export const SET_ORDER_LIST_FIRST_PAGE = (state) => {
 }
 
 export const ADD_GOOD_TO_ORDER = (state, {good, qty}) => {
-  Vue.set(state.order,
+  Vue.set(state.order.items,
     good['.key'],
     {
       good: good,
@@ -57,8 +101,9 @@ export const ADD_GOOD_TO_ORDER = (state, {good, qty}) => {
     }
   )
 }
-export const CREAR_ORDER = (state) => {
-  state.order = {}
+export const CLEAR_ORDER = (state) => {
+  Vue.set(state, 'order.items', {})
+  _.forEach(state.goods.list, el => {el.qty=0})
 }
 export const SIGN_IN = (state, {email, pass, token}) => {
   Vue.set(state, 'auth', { session: token, isLoggedIn: true })

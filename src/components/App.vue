@@ -35,7 +35,7 @@ export default {
     AppNav,
     AppFooter,
     ErrorMsg,
-    Spinner
+    Spinner,
   },
   computed: mapGetters([
     'isLoggedIn'
@@ -46,20 +46,25 @@ export default {
 </script>
 
 <style lang="scss">
+$footerHeight: 60px;
 html{
   position: relative;
   height: 100%;
-/*  overflow: hidden; */
+  min-height: 100%;
+  overflow: hidden;
 }
 body{
-/*  margin-bottom: 60px; */
+  margin-bottom: $footerHeight; 
+  min-height: 100vh;
   height: 100%;
 }
 #app, #page{
-  display: flex;
-  flex-direction: column;
+}
+#app{
   height: 100%;
-  flex: 1;
+}
+#page{
+  height: calc(100vh-$footerHeight);
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s

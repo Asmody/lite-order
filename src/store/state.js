@@ -19,7 +19,8 @@ if (localStorage.getItem(STORAGE_KEY)) {
 initialState.db = {
   goods: [],
   prices: {},
-  goodsGroups: {}
+  goodsGroups: [],
+  orders: []
 }
 initialState.goods = {
   list: [],
@@ -28,20 +29,27 @@ initialState.goods = {
     currentPage: 1
   },
   options: {
-    perPage: 13,
+    perPage: 12,
     lastKey: '',
     lastPage: false,
 //      orderBy: '.key'
     orderBy: 'code'
-  }
+  },
+  filter: '',
+  filtered: []
 }
 initialState.groups = {
-  list: []
+  list: [],
+  selected: [],
+  filter: ''
 }
 initialState.orders = {
   list: []
 }
-initialState.order = {}
+initialState.order = {
+  items: {},
+  comment: ''
+}
 initialState.error = ''
 initialState.loading = false
 

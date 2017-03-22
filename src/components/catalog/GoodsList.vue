@@ -12,11 +12,11 @@
     <tbody>
       <tr v-for="(good,idx) in goods" :key="good['.key']" :class="{'in-order':good.qty>0}">
         <td class="col-code">{{good.code}}</td>
-        <td class="col-brand">{{good.brand}}</td>
-        <td class="col-descr">{{good.description}}</td>
-        <td class="col-price">{{good.price}}</td>
+        <td class="col-brand"><div>{{good.brand}}</div></td>
+        <td class="col-descr"><div>{{good.description.substr(0, 135)}}</div></td>
+        <td class="col-price">{{money.format(good.price)}}</td>
         <td class="col-qty">
-          <input class="input is-small" type="number" min="0" maxlength="10" v-model="good.qty" @input="(e)=>{updateQty(idx, e)}" />
+          <input class="input is-small good-qty" type="number" min="0" maxlength="10" v-model="good.qty" @input="(e)=>{updateQty(idx, e)}" />
         </td>
       </tr>
     </tbody>
@@ -28,6 +28,15 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'goods-list',
+  data () {
+    return {
+      money: new Intl.NumberFormat('ru-RU', {
+        style:'currency',
+        currency: 'RUB',
+        minimumFractionDigits: 2
+      })
+    }
+  },
   computed: {
     ...mapGetters([
       'goods'
@@ -39,16 +48,17 @@ export default {
   methods: {
     updateQty (idx, e) {
       let val = e.target.valueAsNumber
-      console.log(val);
       if (val === NaN) {
         e.target.value = '0'
       } else {
-        this.updateOrder({good:this.goods[idx], qty:val})
+        e.target.value = val
       }
+      this.updateOrder({good:this.goods[idx], qty:val})
     },
     ...mapActions([
         'loadGoodsList',
-        'updateOrder'
+        'updateOrder',
+        'saveOrder'
     ])
   }
 }
@@ -71,6 +81,10 @@ export default {
     display: table;
     table-layout: fixed;
     width: 100%;
+    td{
+      overflow: hidden;
+      height: 5vh;
+    }
   }
 }
 .col-code, .col-brand{
@@ -90,5 +104,8 @@ td.col-price{
 }
 tr.in-order{
   font-weight: bold;
+}
+.good-qty{
+  text-align: right;
 }
 </style>
