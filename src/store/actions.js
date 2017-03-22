@@ -12,6 +12,7 @@ export const clearError = ({commit}) => {
 }
 
 export const loadDb = ({commit, dispatch, state}) => {
+  dispatch('setLoading', true)
   return Promise.all([
     db.getGoods({orderBy: state.goods.options.orderBy}),
     db.getPrices(),
@@ -19,9 +20,11 @@ export const loadDb = ({commit, dispatch, state}) => {
   ])
   .then(result => {
     let [goods, prices, groups] = result
+    dispatch('setLoading', false)
     return commit('LOAD_DB', {goods, prices, groups})
   })
   .catch(error => {
+    dispatch('setLoading', false)
     dispatch('setError', error.message)
   })
 }

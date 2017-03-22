@@ -43,6 +43,6 @@ initialState.orders = {
 }
 initialState.order = {}
 initialState.error = ''
-initialState.loading = true
+initialState.loading = false
 
 export const state = initialState

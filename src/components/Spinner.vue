@@ -9,11 +9,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'spinner',
-  props: [
-    'loading'
-  ],
+  computed: mapGetters(['loading'])
 }
 </script>
 

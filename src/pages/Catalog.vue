@@ -1,35 +1,31 @@
 <template>
-  <div class="columns">
-    <div class="column is-three-quarters">
-      <div class="level">
-        <div class="level-left">
-          <div class="level-item">
-            <quick-search></quick-search>
+  <div class="tile is-ancestor">
+    <div class="tile is-parent is-vertical is-9">
+      <div class="tile is-child">
+        <div class="level">
+          <div class="level-left">
+            <div class="level-item">
+              <quick-search></quick-search>
+            </div>
           </div>
-        </div>
-        <div class="level-right">
-          <div class="level-item>">
-            <pagination></pagination>
+          <div class="level-right">
+            <div class="level-item>">
+              <pagination></pagination>
+            </div>
           </div>
         </div>
       </div>
-      <div class="tile is-ancestor">
-        <div class="tile is-vertical is-parent">
-          <div class="tile is-child">
-            <goods-list></goods-list>
-          </div>
-        </div>
+      <div class="tile is-child">
+        <goods-list></goods-list>
       </div>
     </div>
-    <div class="column">
-      <div class="columns">
-        <div class="column">
-          <cart></cart>
-        </div>
+    <div class="tile is-parent is-vertical">
+      <div class="tile is-child">
+        <cart></cart>
       </div>
-      <div class="columns">
-        <div class="column">
-          <group-list></group-list>
+      <div class="tile is-child">
+        <div id="group-list">
+        <group-list></group-list>
         </div>
       </div>
     </div>
@@ -62,5 +58,9 @@ export default {
 </script>
 
 <style lang="scss">
-
+#group-list{
+  flex: 1 1 auto;
+  height: 1px;
+  overflow-y: auto;
+}
 </style>

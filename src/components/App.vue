@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <spinner v-if="loading"></spinner>
+    <spinner></spinner>
     <template v-if="isLoggedIn">
       <app-nav></app-nav>
-      <section class="section">
+      <section id="page" class="section">
+        <error-msg></error-msg>
         <div class="container is-fluid">
-          <error-msg></error-msg>
           <router-view></router-view>
         </div>
       </section>
@@ -38,8 +38,7 @@ export default {
     Spinner
   },
   computed: mapGetters([
-    'isLoggedIn',
-    'loading'
+    'isLoggedIn'
   ]),
   methods: {
   }
@@ -50,14 +49,17 @@ export default {
 html{
   position: relative;
   height: 100%;
-  overflow: hidden;
+/*  overflow: hidden; */
 }
 body{
-  margin-bottom: 60px;
+/*  margin-bottom: 60px; */
   height: 100%;
 }
-#app{
+#app, #page{
+  display: flex;
+  flex-direction: column;
   height: 100%;
+  flex: 1;
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s
