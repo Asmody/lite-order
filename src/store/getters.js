@@ -15,11 +15,6 @@ export const groupsSelected = state => state.groups.selected
 
 export const order = state => state.order
 export const orderItems = state => state.order.items
-export const orderTotal = state => {
-  return Math.round(
-    _.reduce(state.order.items, (total, item, key) => {
-      return total + Math.round(item.price * 100) / 100 * item.qty
-    }, 0) * 100) / 100
-}
+export const orderTotal = state => state.order.total
 export const orderSize = state => _.size(state.order.items)
 

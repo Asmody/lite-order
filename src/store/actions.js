@@ -1,6 +1,4 @@
 
-import router from '@/router'
-
 import db from '@/modules/db'
 
 export const setError = ({commit}, error) => {
@@ -45,8 +43,8 @@ export const loadGoodsList = ({dispatch, commit, state}) => {
     let items= _.map(_goods, el => {
       return {
         ...el,
-        price: _.get(state.db.prices, el['.key'], 0),
-        qty: _.get(state.order.items, [el['.key'], 'qty'], 0)
+        price: _.defaultTo(state.db.prices[el.id], 0),
+        qty: _.get(state.order.items, [el.id, 'qty'], 0)
       }
     })
     commit('LOAD_GOODS_LIST', items)
@@ -75,7 +73,7 @@ export const loadGroupsList = ({dispatch, commit, state}) => {
       resolve(true)
     }
   })
-  pr.then((some) => {
+  pr.then(some => {
     let _groups = state.db.goodsGroups
     let items = _groups
     commit('LOAD_GROUPS_LIST', items)
@@ -134,7 +132,14 @@ export const updateOrder = ({dispatch, commit, state}, {good, qty}) => {
 export const clearOrder = ({commit}) => {
   commit('CLEAR_ORDER')
 }
-export const saveOrder = ({dispatch, commit, state}) => {
+export const createOrder = ({dispatch, commit, state}) => {
+  db.newOrder(state.order)
+  .then(some => {
+    commit('CLEAR_ORDER')
+  })
+  .catch(error => {
+    dispatch('setError', error.message)
+  })
 
 }
 
@@ -150,7 +155,6 @@ export const signIn = ({dispatch, commit}, {email, pass, redirect}) => {
 export const signOut = ({commit}) => {
   dbAuth.signOut().then(r => {
     commit('SIGN_OUT')
-    router.push({ path: '/' })
   })
 }
 

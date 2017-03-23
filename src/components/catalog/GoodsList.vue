@@ -10,13 +10,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(good,idx) in goods" :key="good['.key']" :class="{'in-order':good.qty>0}">
+      <tr v-for="(good,idx) in goods" :key="good.id" :class="{'in-order':good.qty>0}">
         <td class="col-code">{{good.code}}</td>
         <td class="col-brand"><div>{{good.brand}}</div></td>
         <td class="col-descr"><div>{{good.description.substr(0, 135)}}</div></td>
         <td class="col-price">{{money.format(good.price)}}</td>
         <td class="col-qty">
-          <input class="input is-small good-qty" type="number" min="0" maxlength="10" v-model="good.qty" @input="(e)=>{updateQty(idx, e)}" />
+          <input class="input is-small good-qty" type="number" min="0" maxlength="10" v-model="good.qty" @input="(e)=>{updateQty(good, e)}" />
         </td>
       </tr>
     </tbody>
@@ -46,14 +46,14 @@ export default {
     this.loadGoodsList()
   },
   methods: {
-    updateQty (idx, e) {
+    updateQty (good, e) {
       let val = e.target.valueAsNumber
       if (val === NaN) {
         e.target.value = '0'
       } else {
         e.target.value = val
       }
-      this.updateOrder({good:this.goods[idx], qty:val})
+      this.updateOrder({good, qty:val})
     },
     ...mapActions([
         'loadGoodsList',

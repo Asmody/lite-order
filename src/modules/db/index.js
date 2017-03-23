@@ -24,13 +24,8 @@ const getCollection = (collection, orderBy) => {
   })
 }
 
-const pushInto = (collection, item) => {
-  return new Promise ( (resolve, reject) => {
-    const dbRef = db.ref(collection)
-    dbRef.push(item, response => {
-      resolve(response)
-    })
-  })
+const insertInto = (collection, item) => {
+  return db.ref(collection).push().set(item)
 }
 
 export default {
@@ -40,7 +35,7 @@ export default {
       let items = []
       snap.forEach(item => {
         items.push({
-          '.key': item.key,
+          id: item.key,
           ...item.val()
         })
       })
@@ -63,14 +58,14 @@ export default {
       let items = []
       snap.forEach(item => {
         items.push({
-          '.key': item.key,
-          'name': item.val()
+          id: item.key,
+          name: item.val()
         })
       })
       return items
     })
   },
   newOrder(order) {
-
+    return insertInto('orders', order)
   }
 }

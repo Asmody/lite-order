@@ -7,14 +7,14 @@
       </p>
     </div>
     <div class="panel-block selected-groups" v-if="groupsSelected.length">
-      <div v-for="group in groupsSelected" :key="group['.key']">
+      <div v-for="group in groupsSelected" :key="group.id">
         <span class="tag is-small">
           <span class="selected-group-name">{{group.name}}</span>
           <button class="delete is-small" @click="e => {unselectGroup(group, e)}"></button>
         </span>
       </div>
     </div>
-    <a class="panel-block" v-for="group in groups" :key="group['.key']" @click="e => {selectGroup(group, e)}">{{group.name}}</a>
+    <a class="panel-block" v-for="group in groups" :key="group.id" @click="e => {selectGroup(group, e)}">{{group.name}}</a>
   </div>
 </template>
 

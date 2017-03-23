@@ -35,7 +35,7 @@ export const FILTER_GOODS = (state) => {
           || el.description.toLowerCase().indexOf(state.goods.filter) != -1
           || el.code.toLowerCase().indexOf(state.goods.filter) != -1)
       && (!state.groups.selected.length
-          || _.some(state.groups.selected, gr => gr['.key'] == el['groupRef'] ))
+          || _.some(state.groups.selected, gr => gr.id == el.groupRef ))
     })
   } else {
     state.goods.filtered = []
@@ -93,16 +93,25 @@ export const SET_ORDER_LIST_FIRST_PAGE = (state) => {
 
 export const ADD_GOOD_TO_ORDER = (state, {good, qty}) => {
   Vue.set(state.order.items,
-    good['.key'],
+    good.id,
     {
       good: good,
       price: good.price,
       qty: qty,
     }
   )
+  Vue.set(state.order, 'total', Math.round(
+    _.reduce(state.order.items, (total, item, key) => {
+      return total + Math.round(item.price * 100) / 100 * item.qty
+    }, 0) * 100) / 100
+  )
 }
 export const CLEAR_ORDER = (state) => {
-  Vue.set(state, 'order.items', {})
+  Vue.set(state, 'order', {
+    items: {},
+    comment: '',
+    total: ''
+  })
   _.forEach(state.goods.list, el => {el.qty=0})
 }
 export const SIGN_IN = (state, {email, pass, token}) => {

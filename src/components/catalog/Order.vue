@@ -77,10 +77,13 @@ export default {
       this.$emit('close')
     },
     saveOrder () {
+      this.createOrder()
       console.log('Save order')
       this.$emit('close')
+      this.$router.push('/orders')
     },
     ...mapActions([
+      'createOrder'
     ])
   }
 }
