@@ -7,35 +7,56 @@ import dbAuth from '@/modules/auth'
 
 export default {
   install (Vue, options) {
-    if (store.state.auth.token) {
-      loginWithToken(store.state.auth.token)
+    if (store.state.user.email && store.state.user.pass) {
+      this.login({
+        email:store.state.user.email,
+        pass: store.state.user.pass,
+        redirect: '/'
+      })
     }
     Vue.prototype.$auth = Vue.auth = this
   },
   login ({email, pass, redirect}) {
-    dbAuth.signIn({email, pass}).then(token => {
-      store.commit('SIGN_IN', {email, pass, token})
-      router.push(redirect)
+    store.dispatch('setLoading', true)
+    return dbAuth.signIn({email, pass}).then(dbUser => {
+      let user = {
+        id: dbUser.uid,
+        email,
+        pass
+      }
+      dbUser.getToken()
+      .then(token => {
+        user.token = token
+        store.dispatch('signIn', user)
+        store.dispatch('setLoading', false)
+        router.push(redirect)
+      })
     })
     .catch(err => {
       store.dispatch('setError', err.message)
     })
   },
+/*
   loginWithToken (token) {
-    dbAuth.signInWithToken(token).then(user => {
-      let email = user.email
-      let pass = ''
-      let token = user.getToken()
-      store.commit('SIGN_IN', {email, pass, token})
+    return dbAuth.signInWithToken(token).then(dbUser => {
+      let user = {
+        id: dbUser.uid,
+        email: dbUser.email
+      }
+      dbUser.getToken()
+      .then(token => {
+        user.token = token
+        store.dispatch('signIn', user)
+      })
     })
     .catch(err => {
       store.dispatch('setError', err.message)
     })
   },
+*/
   logout () {
-    dbAuth.signOut().then(r => {
-      store.commit('SIGN_OUT')
-      router.push({ path: '/login', query: { redirect: '/catalog'} })
+    return dbAuth.signOut().then(r => {
+      return store.dispatch('signOut')
     })
   }
 }

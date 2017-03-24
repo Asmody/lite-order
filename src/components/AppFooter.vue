@@ -1,12 +1,23 @@
 <template>
   <footer>
     <div class="container is-fluid">
-      Some footer
+      id: {{user.id}} / {{isLoggedIn ? 'logged in' : 'logged out'}}
     </div>
   </footer>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
+export default {
+  name: 'app-footer',
+  computed: {
+    ...mapGetters([
+      'user',
+      'isLoggedIn'
+    ])
+  }
+}
 
 </script>
 

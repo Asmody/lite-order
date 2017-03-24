@@ -2,7 +2,7 @@ export const error = state => state.error
 export const loading = state => state.loading
 
 export const auth = state => state.auth
-export const isLoggedIn = state => state.auth.isLoggedIn
+export const isLoggedIn = state => !!state.user.id
 
 export const user = state => state.user
 
@@ -17,4 +17,6 @@ export const order = state => state.order
 export const orderItems = state => state.order.items
 export const orderTotal = state => state.order.total
 export const orderSize = state => _.size(state.order.items)
+
+export const orders = state => state.orders
 

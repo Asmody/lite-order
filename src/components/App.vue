@@ -56,12 +56,10 @@ html{
 body{
   margin-bottom: $footerHeight; 
   min-height: 100vh;
-  height: 100%;
-}
-#app, #page{
+  height: 1000vh;
 }
 #app{
-  height: 100%;
+  height: 100vh;
 }
 #page{
   height: calc(100vh-$footerHeight);

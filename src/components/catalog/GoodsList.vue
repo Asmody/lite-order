@@ -14,7 +14,7 @@
         <td class="col-code">{{good.code}}</td>
         <td class="col-brand"><div>{{good.brand}}</div></td>
         <td class="col-descr"><div>{{good.description.substr(0, 135)}}</div></td>
-        <td class="col-price">{{money.format(good.price)}}</td>
+        <td class="col-price">{{money(good.price)}}</td>
         <td class="col-qty">
           <input class="input is-small good-qty" type="number" min="0" maxlength="10" v-model="good.qty" @input="(e)=>{updateQty(good, e)}" />
         </td>
@@ -30,11 +30,7 @@ export default {
   name: 'goods-list',
   data () {
     return {
-      money: new Intl.NumberFormat('ru-RU', {
-        style:'currency',
-        currency: 'RUB',
-        minimumFractionDigits: 2
-      })
+      money: utils.money
     }
   },
   computed: {

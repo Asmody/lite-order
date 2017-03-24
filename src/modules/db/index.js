@@ -2,26 +2,16 @@ import db from '@/db'
 
 const getCollection = (collection, orderBy) => {
   orderBy = orderBy || '.key'
-  return new Promise ( (resolve, reject) => {
-    let items=[]
-    const dbRef = db.ref(collection)
-    let query = null
-    if (orderBy == '.key') {
-      query = dbRef.orderByKey()
-    } else if (orderBy == '.value') {
-      query = dbRef.orderByValue()
-    } else {
-      query = dbRef.orderByChild(orderBy)
-    }
-    query.once('value', 
-    (snapshot) => {
-      resolve(snapshot)
-    },
-    (error) => {
-      console.error('DBError:' + error)
-      reject(error)
-    })
-  })
+  const dbRef = db.ref(collection)
+  let query = null
+  if (orderBy == '.key') {
+    query = dbRef.orderByKey()
+  } else if (orderBy == '.value') {
+    query = dbRef.orderByValue()
+  } else {
+    query = dbRef.orderByChild(orderBy)
+  }
+  return query.once('value')
 }
 
 const insertInto = (collection, item) => {
@@ -65,7 +55,38 @@ export default {
       return items
     })
   },
-  newOrder(order) {
+  getOrderNumber (todo) {
+    db.ref('options/orderNumber').off()
+    return db.ref('options/orderNumber').on('value', snap => {
+      const orderNumber = _.defaultTo(1 * snap.val(), 1)
+      console.log('Order num: ' + orderNumber)
+      return todo(orderNumber)
+    })
+  },
+  incOrderNumber () {
+    return db.ref('options/orderNumber').once('value')
+    .then(snap => {
+      const newNumber = 1 + snap.val()
+      db.ref('options/orderNumber').set(newNumber)
+    })
+  },
+  newOrder (order) {
     return insertInto('orders', order)
+    .then(snap => {
+      return this.incOrderNumber()
+    })
+  },
+  getOrders () {
+    return getCollection('orders')
+    .then(snap => {
+      let items = []
+      snap.forEach(item => {
+        items.push({
+          id: item.key,
+          ...item.val()
+        })
+      })
+      return items
+    })
   }
 }

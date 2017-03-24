@@ -16,11 +16,11 @@ export const RECALC_GOODS_NAV = (state, goodsLength) => {
   }
 }
 
-export const LOAD_DB = (state, {goods, prices, groups}) => {
+export const LOAD_DB = (state, {goods, prices, groups, orders}) => {
   Vue.set(state.db, 'goods', goods)
   Vue.set(state.db, 'prices', prices)
   Vue.set(state.db, 'goodsGroups', groups)
-
+  Vue.set(state.db, 'orders', orders)
   // Goods nav
   RECALC_GOODS_NAV(state, goods.length)
 }
@@ -72,22 +72,22 @@ export const REMOVE_SELECTED_GROUP = (state, group) => {
   FILTER_GOODS(state)
 }
 
-export const SET_ORDER_LIST_LAST_PAGE = (state) => {
+export const SET_GOODS_LIST_LAST_PAGE = (state) => {
   if (state.goods.nav.currentPage < state.goods.nav.pages) {
     state.goods.nav.currentPage = state.goods.nav.pages
   }
 }
-export const SET_ORDER_LIST_NEXT_PAGE = (state) => {
+export const SET_GOODS_LIST_NEXT_PAGE = (state) => {
   if (state.goods.nav.currentPage < state.goods.nav.pages) {
     state.goods.nav.currentPage++
   }
 }
-export const SET_ORDER_LIST_PREV_PAGE = (state) => {
+export const SET_GOODS_LIST_PREV_PAGE = (state) => {
   if (state.goods.nav.currentPage > 1) {
     state.goods.nav.currentPage--
   }
 }
-export const SET_ORDER_LIST_FIRST_PAGE = (state) => {
+export const SET_GOODS_LIST_FIRST_PAGE = (state) => {
   state.goods.nav.currentPage = 1
 }
 
@@ -114,13 +114,21 @@ export const CLEAR_ORDER = (state) => {
   })
   _.forEach(state.goods.list, el => {el.qty=0})
 }
-export const SIGN_IN = (state, {email, pass, token}) => {
-  Vue.set(state, 'auth', { session: token, isLoggedIn: true })
-  Vue.set(state, 'user', { email, password: pass })
+export const SET_ORDER_NUMBER = (state, orderNumber) => {
+  state.order.number = orderNumber
+}
+
+export const LOAD_ORDERS_LIST = (state, items) => {
+  Vue.set(state, 'orders', items)
+}
+
+export const SIGN_IN = (state, {id, email, pass, token}) => {
+  Vue.set(state, 'auth', { token, isLoggedIn: true })
+  Vue.set(state, 'user', { id, email, pass: pass })
 }
 export const SIGN_OUT = (state) => {
-  Vue.set(state, 'auth', { session: '', isLoggedIn: false })
-  Vue.set(state, 'user', { email: '', password: '' })
+  Vue.set(state, 'auth', { token: '', isLoggedIn: false })
+  Vue.set(state, 'user', { id: '', email: '', pass: '' })
 }
 
 export const SET_LOADING = (state, loading) => {

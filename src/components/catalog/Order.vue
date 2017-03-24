@@ -1,11 +1,14 @@
 <template>
   <modal :is-active="active" @close="close" @save="saveOrder" title="Оформление заказа">
-    <div class="level has-shadow">
+    <div class="level">
       <div class="level-left">
+        <div class="level-item"># {{order.number}}</div>
+      </div>
+      <div class="level-center">
         <div class="level-item">Всего позиций: {{orderSize}}</div>
       </div>
       <div class="level-right">
-        <div class="level-item">На сумму: {{money.format(orderTotal)}}</div>
+        <div class="level-item">На сумму: {{money(orderTotal)}}</div>
       </div>
     </div>
     <div class="field">
@@ -30,9 +33,9 @@
             <td>{{item.good.code}}</td>
             <td>{{item.good.brand}}</td>
             <td>{{item.good.description}}</td>
-            <td>{{money.format(item.price)}}</td>
+            <td>{{money(item.price)}}</td>
             <td>{{item.qty}}</td>
-            <td>{{money.format(item.price * item.qty)}}</td>
+            <td>{{money(item.price * item.qty)}}</td>
           </tr>
         </tbody>
       </table>
@@ -48,11 +51,7 @@ export default {
   name: 'order',
   data () {
     return {
-      money: new Intl.NumberFormat('ru-RU', {
-        style:'currency',
-        currency: 'RUB',
-        minimumFractionDigits: 2
-      })
+      money: utils.money
     }
   },
   props: [

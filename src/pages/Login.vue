@@ -39,7 +39,7 @@ export default {
   data () {
     return {
       email: this.$store.state.user.email,
-      pass: this.$store.state.user.password
+      pass: this.$store.state.user.pass
     }
   },
   components: {

@@ -11,8 +11,9 @@ if (localStorage.getItem(STORAGE_KEY)) {
       session: null
     },
     user: {
+      id: '',
       email: '',
-      password: ''
+      pass: ''
     }
   }
 }
@@ -48,7 +49,8 @@ initialState.orders = {
 }
 initialState.order = {
   items: {},
-  comment: ''
+  comment: '',
+  number: 0
 }
 initialState.error = ''
 initialState.loading = false

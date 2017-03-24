@@ -6,7 +6,7 @@
           <vf-icon icon="shopping-cart"></vf-icon>
         </span>
         <p class="card-header-title">
-          {{total}}
+          {{money(total)}}
         </p>
       </div>
       <div class="card-footer">
@@ -27,10 +27,14 @@ export default {
   data () {
     return {
       showOrder: false,
+      money: utils.money
     }
   },
   components: {
     Order
+  },
+  beforeMount () {
+    this.initOrder()
   },
   computed: {
     ...mapGetters({
@@ -39,6 +43,7 @@ export default {
   },
   methods: {
     ...mapActions([
+      'initOrder',
       'clearOrder'
     ])
   }
