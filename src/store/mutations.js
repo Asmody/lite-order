@@ -16,11 +16,12 @@ export const RECALC_GOODS_NAV = (state, goodsLength) => {
   }
 }
 
-export const LOAD_DB = (state, {goods, prices, groups, orders}) => {
+export const LOAD_DB = (state, {goods, prices, groups, orders, customers}) => {
   Vue.set(state.db, 'goods', goods)
   Vue.set(state.db, 'prices', prices)
   Vue.set(state.db, 'goodsGroups', groups)
   Vue.set(state.db, 'orders', orders)
+  Vue.set(state.db, 'customers', customers)
   // Goods nav
   RECALC_GOODS_NAV(state, goods.length)
 }
@@ -122,9 +123,18 @@ export const LOAD_ORDERS_LIST = (state, items) => {
   Vue.set(state, 'orders', items)
 }
 
-export const SIGN_IN = (state, {id, email, pass, token}) => {
+export const LOAD_USER_CUSTOMERS = (state, items) => {
+  Vue.set(state.user, 'customers', _.map(items ? items : state.db.customers, (el, key) => {
+    return {
+      id: key,
+      ...el
+    }
+  }))
+}
+
+export const SIGN_IN = (state, {token, ...user}) => {
   Vue.set(state, 'auth', { token, isLoggedIn: true })
-  Vue.set(state, 'user', { id, email, pass: pass })
+  Vue.set(state, 'user', user)
 }
 export const SIGN_OUT = (state) => {
   Vue.set(state, 'auth', { token: '', isLoggedIn: false })

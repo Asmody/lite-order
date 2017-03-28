@@ -21,7 +21,8 @@ initialState.db = {
   goods: [],
   prices: {},
   goodsGroups: [],
-  orders: []
+  orders: [],
+  customers: {}
 }
 initialState.goods = {
   list: [],
@@ -50,6 +51,7 @@ initialState.orders = {
 initialState.order = {
   items: {},
   comment: '',
+  customerRef: null,
   number: 0
 }
 initialState.error = ''

@@ -13,6 +13,17 @@
     </div>
     <div class="field">
       <p class="control">
+        <span class="select">
+          <select v-model="order.customer">
+            <option v-for="customer in userCustomers" :key="customer.id" :value="customer.id">
+              {{customer.description}}
+            </option>
+          </select>
+        </span>
+      </p>
+    </div>
+    <div class="field">
+      <p class="control">
         <input class="input" type="text" placeholder="Комментарий к заказу" v-model="order.comment">
       </p>
     </div>
@@ -60,6 +71,8 @@ export default {
   components: {
     Modal
   },
+  beforeMount () {
+  },
   computed: {
     active () {
       return this.isActive
@@ -68,7 +81,8 @@ export default {
       'order',
       'orderItems',
       'orderTotal',
-      'orderSize'
+      'orderSize',
+      'userCustomers'
     ])
   },
   methods: {
@@ -82,7 +96,8 @@ export default {
       this.$router.push('/orders')
     },
     ...mapActions([
-      'createOrder'
+      'createOrder',
+      'loadUserCustomers'
     ])
   }
 }

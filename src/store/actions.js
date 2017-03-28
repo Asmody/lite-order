@@ -15,17 +15,19 @@ export const loadDb = ({commit, dispatch, state}) => {
     db.getGoods({orderBy: state.goods.options.orderBy}),
     db.getPrices(),
     db.getGroups(),
-    db.getOrders()
+    db.getOrders(state.user),
+    db.getCustomers(state.user)
   ])
   .then(result => {
     let [
       goods,
       prices,
       groups,
-      orders
+      orders,
+      customers
     ] = result
     dispatch('setLoading', false)
-    return commit('LOAD_DB', {goods, prices, groups, orders})
+    return commit('LOAD_DB', {goods, prices, groups, orders, customers})
   })
   .catch(error => {
     dispatch('setLoading', false)
@@ -146,7 +148,7 @@ export const clearOrder = ({commit}) => {
 }
 export const createOrder = ({dispatch, commit, state}) => {
   db.newOrder({
-    date: new Date,
+    date: (new Date).toISOString(),
     user: {
       id: state.user.id,
       email: state.user.email
@@ -166,8 +168,27 @@ export const loadOrdersList = ({dispatch, commit, state}) => {
   commit('LOAD_ORDERS_LIST', _orders)
 }
 
-export const signIn = ({dispatch, commit}, user) => {
-  commit('SIGN_IN', user)
+export const loadUserCustomers = ({dispatch, commit, state}) => {
+  commit('LOAD_USER_CUSTOMERS')
+}
+
+export const signIn = ({dispatch, commit, state}, user) => {
+  db.getUser(user.id)
+  .then(dbUser => {
+    return commit('SIGN_IN', {
+      ...user,
+      ...dbUser
+    })
+  })
+  .then(() => {
+    return db.getCustomers(state.user)
+    .then(customers => {
+      commit('LOAD_USER_CUSTOMERS', customers)
+    })
+  })
+  .catch(error => {
+    dispatch('setError', error.message)
+  })
 }
 export const signOut = ({commit}) => {
   commit('SIGN_OUT')
