@@ -9,7 +9,7 @@ export const CLEAR_ERROR = (state) => {
 
 export const RECALC_GOODS_NAV = (state, goodsLength) => {
   const perPage = state.goods.options.perPage
-  const goodsCount = goodsLength || state.db.goods.length
+  const goodsCount = goodsLength || state.goods.filtered.length || state.db.goods.length
   state.goods.nav.pages = (goodsCount % perPage == 0 ? goodsCount/perPage : Math.floor(goodsCount/perPage)+1)
   if (state.goods.nav.pages > 0) {
     state.goods.nav.currentPage = 1
@@ -28,6 +28,11 @@ export const LOAD_DB = (state, {goods, prices, groups, orders, customers}) => {
 export const LOAD_GOODS_LIST = (state, items) => {
   Vue.set(state.goods, 'list', items)
 }
+export const SET_GOODS_PER_PAGE = (state, perPage) => {
+  state.goods.options.perPage = perPage || 20
+  RECALC_GOODS_NAV(state)
+}
+
 
 export const FILTER_GOODS = (state) => {
   if (state.goods.filter || state.groups.selected.length) {
@@ -118,6 +123,10 @@ export const CLEAR_ORDER = (state) => {
 export const SET_ORDER_NUMBER = (state, orderNumber) => {
   state.order.number = orderNumber
 }
+export const SET_ORDER_CUSTOMER = (state, customer) => {
+  state.order.customer = customer
+}
+
 
 export const LOAD_ORDERS_LIST = (state, items) => {
   Vue.set(state, 'orders', items)

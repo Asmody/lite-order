@@ -7,6 +7,7 @@ import dbAuth from '@/modules/auth'
 
 export default {
   install (Vue, options) {
+
     if (store.state.user.email && store.state.user.pass) {
       this.login({
         email:store.state.user.email,
@@ -14,23 +15,27 @@ export default {
         redirect: '/'
       })
     }
+
     Vue.prototype.$auth = Vue.auth = this
   },
   login ({email, pass, redirect}) {
-    store.dispatch('setLoading', true)
-    return dbAuth.signIn({email, pass}).then(dbUser => {
+    return store.dispatch('setLoading', true)
+    .then(() => {
+      return dbAuth.signIn({email, pass})
+    })
+    .then(dbUser => {
       let user = {
         id: dbUser.uid,
         email,
         pass
       }
-      dbUser.getToken()
-      .then(token => {
-        user.token = token
-        store.dispatch('signIn', user)
-        store.dispatch('setLoading', false)
-        router.push(redirect)
-      })
+      return store.dispatch('signIn', user)
+    })
+    .then(() => {
+      return store.dispatch('setLoading', false)
+    })
+    .then(() => {
+      return router.push(redirect)
     })
     .catch(err => {
       store.dispatch('setError', err.message)

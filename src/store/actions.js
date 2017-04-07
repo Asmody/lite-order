@@ -63,6 +63,11 @@ export const loadGoodsList = ({dispatch, commit, state}) => {
   })
 }
 
+export const setGoodsPerPage = ({dispatch, commit, state}, perPage) => {
+  commit('SET_GOODS_PER_PAGE', perPage)
+  dispatch('loadGoodsList')
+}
+
 export const setGoodsFilter = ({dispatch, commit, state}, filter) => {
   commit('SET_GOODS_FILTER', filter)
   dispatch('loadGoodsList')
@@ -135,19 +140,25 @@ export const setGoodsListFirstPage = ({dispatch, commit, state}) => {
 
 export const initOrder = ({dispatch, commit, state}) => {
   commit('CLEAR_ORDER')
-  db.getOrderNumber(orderNumber => {
+  return db.getOrderNumber(orderNumber => {
     commit('SET_ORDER_NUMBER', orderNumber)
+    if (state.user.customers) {
+      commit('SET_ORDER_CUSTOMER', state.user.customers[0])
+    }
   })
 }
 export const updateOrder = ({dispatch, commit, state}, {good, qty}) => {
-  // console.log(good, qty)
-  commit('ADD_GOOD_TO_ORDER', {good, qty})
+  return new Promise((resolve, reject) => {
+    resolve(commit('ADD_GOOD_TO_ORDER', {good, qty}))
+  })
 }
 export const clearOrder = ({commit}) => {
-  commit('CLEAR_ORDER')
+  return new Promise((resolve, reject) => {
+    resolve(commit('CLEAR_ORDER'))
+  })
 }
 export const createOrder = ({dispatch, commit, state}) => {
-  db.newOrder({
+  return db.newOrder({
     date: (new Date).toISOString(),
     user: {
       id: state.user.id,
@@ -156,7 +167,7 @@ export const createOrder = ({dispatch, commit, state}) => {
     ...state.order
   })
   .then(some => {
-    commit('CLEAR_ORDER')
+    return commit('CLEAR_ORDER')
   })
   .catch(error => {
     dispatch('setError', error.message)
@@ -164,16 +175,19 @@ export const createOrder = ({dispatch, commit, state}) => {
 }
 
 export const loadOrdersList = ({dispatch, commit, state}) => {
-  const _orders = state.db.orders
-  commit('LOAD_ORDERS_LIST', _orders)
+  return new Promise((resolve, reject) => {
+    resolve(commit('LOAD_ORDERS_LIST', state.db.orders))
+  })
 }
 
 export const loadUserCustomers = ({dispatch, commit, state}) => {
-  commit('LOAD_USER_CUSTOMERS')
+  return new Promise((resolve, reject) => {
+    resolve(commit('LOAD_USER_CUSTOMERS'))
+  })
 }
 
 export const signIn = ({dispatch, commit, state}, user) => {
-  db.getUser(user.id)
+  return db.getUser(user.id)
   .then(dbUser => {
     return commit('SIGN_IN', {
       ...user,
@@ -191,9 +205,13 @@ export const signIn = ({dispatch, commit, state}, user) => {
   })
 }
 export const signOut = ({commit}) => {
-  commit('SIGN_OUT')
+  return new Promise((resolve, reject) => {
+    resolve(commit('SIGN_OUT'))
+  })
 }
 
 export const setLoading = ({commit}, loading) => {
-  commit('SET_LOADING', loading)
+  return new Promise((resolve, reject) => {
+    resolve(commit('SET_LOADING', loading))
+  })
 }

@@ -24,8 +24,6 @@ export default {
 <style lang="scss">
 $footerHeight: 60px;
 footer{
-  position: fixed;
-  bottom: 0;
   width: 100%;
   height: $footerHeight;
   line-height: $footerHeight;

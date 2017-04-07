@@ -1014,127 +1014,123 @@ body .markdown-body
     page-break-after: avoid;
   }
 }
-</style><title>mutations</title></head><body><article class="markdown-body"><p>import Vue from &lsquo;vue&rsquo;</p>
-<p>export const SET_ERROR = (state, error) =&gt; {<br />
-  state.error = error<br />
-}<br />
-export const CLEAR_ERROR = (state) =&gt; {<br />
-  state.error = &lsquo;&rsquo;<br />
-}</p>
-<p>export const RECALC_GOODS_NAV = (state, goodsLength) =&gt; {<br />
-  const perPage = state.goods.options.perPage<br />
-  const goodsCount = goodsLength || state.db.goods.length<br />
-  state.goods.nav.pages = (goodsCount % perPage == 0 ? goodsCount/perPage : Math.floor(goodsCount/perPage)+1)<br />
-  if (state.goods.nav.pages &gt; 0) {<br />
-    state.goods.nav.currentPage = 1<br />
-  }<br />
-}</p>
-<p>export const LOAD_DB = (state, {goods, prices, groups, orders, customers}) =&gt; {<br />
-  Vue.set(state.db, &lsquo;goods&rsquo;, goods)<br />
-  Vue.set(state.db, &lsquo;prices&rsquo;, prices)<br />
-  Vue.set(state.db, &lsquo;goodsGroups&rsquo;, groups)<br />
-  Vue.set(state.db, &lsquo;orders&rsquo;, orders)<br />
-  Vue.set(state.db, &lsquo;customers&rsquo;, customers)<br />
-  // Goods nav<br />
-  RECALC_GOODS_NAV(state, goods.length)<br />
-}<br />
-export const LOAD_GOODS_LIST = (state, items) =&gt; {<br />
-  Vue.set(state.goods, &lsquo;list&rsquo;, items)<br />
-}</p>
-<p>export const FILTER_GOODS = (state) =&gt; {<br />
-  if (state.goods.filter || state.groups.selected.length) {<br />
-    state.goods.filtered = <em>.filter(state.db.goods, el =&gt; {<br />
-      return (!state.goods.filter<br />
-          || el.description.toLowerCase().indexOf(state.goods.filter) != -1<br />
-          || el.code.toLowerCase().indexOf(state.goods.filter) != -1)<br />
-      &amp;&amp; (!state.groups.selected.length<br />
-          || </em>.some(state.groups.selected, gr =&gt; gr.id == el.groupRef ))<br />
-    })<br />
-  } else {<br />
-    state.goods.filtered = []<br />
-  }<br />
-  RECALC_GOODS_NAV(state, state.goods.filtered.length)<br />
-}</p>
-<p>export const SET_GOODS_FILTER = (state, filter) =&gt; {<br />
-  state.goods.filter = filter.toLowerCase()<br />
-  FILTER_GOODS(state)<br />
-}</p>
-<p>export const LOAD_GROUPS_LIST = (state, items) =&gt; {<br />
-  if (state.groups.filter) {<br />
-    Vue.set(state.groups, &lsquo;list&rsquo;, _.filter(items, el =&gt; {<br />
-      return el.name.toLowerCase().indexOf(state.groups.filter) != -1<br />
-    }))<br />
-  } else {<br />
-    Vue.set(state.groups, &lsquo;list&rsquo;, items)<br />
-  }<br />
-}</p>
-<p>export const SET_GROUPS_FILTER = (state, filter) =&gt; {<br />
-  state.groups.filter = filter<br />
-}</p>
-<p>export const ADD_SELECTED_GROUP = (state, group) =&gt; {<br />
-  state.groups.selected = _.union(state.groups.selected, [group])<br />
-  FILTER_GOODS(state)<br />
-}</p>
-<p>export const REMOVE_SELECTED_GROUP = (state, group) =&gt; {<br />
-  state.groups.selected = _.xor(state.groups.selected, [group])<br />
-  FILTER_GOODS(state)<br />
-}</p>
-<p>export const SET_GOODS_LIST_LAST_PAGE = (state) =&gt; {<br />
-  if (state.goods.nav.currentPage &lt; state.goods.nav.pages) {<br />
-    state.goods.nav.currentPage = state.goods.nav.pages<br />
-  }<br />
-}<br />
-export const SET_GOODS_LIST_NEXT_PAGE = (state) =&gt; {<br />
-  if (state.goods.nav.currentPage &lt; state.goods.nav.pages) {<br />
-    state.goods.nav.currentPage++<br />
-  }<br />
-}<br />
-export const SET_GOODS_LIST_PREV_PAGE = (state) =&gt; {<br />
-  if (state.goods.nav.currentPage &gt; 1) {<br />
-    state.goods.nav.currentPage&ndash;<br />
-  }<br />
-}<br />
-export const SET_GOODS_LIST_FIRST_PAGE = (state) =&gt; {<br />
-  state.goods.nav.currentPage = 1<br />
-}</p>
-<p>export const ADD_GOOD_TO_ORDER = (state, {good, qty}) =&gt; {<br />
-  Vue.set(state.order.items,<br />
-    good.id,<br />
-    {<br />
-      good: good,<br />
-      price: good.price,<br />
-      qty: qty,<br />
-    }<br />
-  )<br />
-  Vue.set(state.order, &lsquo;total&rsquo;, Math.round(<br />
-<em>.reduce(state.order.items, (total, item, key) =&gt; {<br />
-      return total + Math.round(item.price * 100) / 100 * item.qty<br />
-    }, 0) * 100) / 100<br />
-  )<br />
-}<br />
-export const CLEAR_ORDER = (state) =&gt; {<br />
-  Vue.set(state, &lsquo;order&rsquo;, {<br />
-    items: {},<br />
-    comment: &lsquo;&rsquo;,<br />
-    total: &lsquo;&rsquo;<br />
-  })<br />
-</em>.forEach(state.goods.list, el =&gt; {el.qty=0})<br />
-}<br />
-export const SET_ORDER_NUMBER = (state, orderNumber) =&gt; {<br />
-  state.order.number = orderNumber<br />
-}</p>
-<p>export const LOAD_ORDERS_LIST = (state, items) =&gt; {<br />
-  Vue.set(state, &lsquo;orders&rsquo;, items)<br />
-}</p>
-<p>LOAD_USER_CUSTOMERS</p>
-<p>export const SIGN_IN = (state, {token, &hellip;user}) =&gt; {<br />
-  Vue.set(state, &lsquo;auth&rsquo;, { token, isLoggedIn: true })<br />
-  Vue.set(state, &lsquo;user&rsquo;, user)<br />
-}<br />
-export const SIGN_OUT = (state) =&gt; {<br />
-  Vue.set(state, &lsquo;auth&rsquo;, { token: &lsquo;&rsquo;, isLoggedIn: false })<br />
-  Vue.set(state, &lsquo;user&rsquo;, { id: &lsquo;&rsquo;, email: &lsquo;&rsquo;, pass: &lsquo;&rsquo; })<br />
-}</p>
-<p>export const SET_LOADING = (state, loading) =&gt; {<br />
-  state.loading = loading<br />
-}</p></article></body></html>
+</style><title>Order</title></head><body><article class="markdown-body"><p><template><br />
+  <modal :is-active="active" @close="close" @save="saveOrder" title="Оформление заказа"><br />
+    <div class="level"><br />
+      <div class="level-left"><br />
+        <div class="level-item"># {{order.number}}</div><br />
+      </div><br />
+      <div class="level-center"><br />
+        <div class="level-item">Всего позиций: {{orderSize}}</div><br />
+      </div><br />
+      <div class="level-right"><br />
+        <div class="level-item">На сумму: {{money(orderTotal)}}</div><br />
+      </div><br />
+    </div><br />
+    <div class="field"><br />
+      <p class="control"><br />
+        <span class="select"><br />
+          <select v-model="order.customer"><br />
+            <option v-for="customer in userCustomers" :key="customer.id" :value="customer.id"><br />
+              {{customer.description}}<br />
+            </option><br />
+          </select><br />
+        </span><br />
+      </p><br />
+    </div><br />
+    <div class="field"><br />
+      <p class="control"><br />
+        <input class="input" type="text" placeholder="Комментарий к заказу" v-model="order.comment"><br />
+      </p><br />
+    </div><br />
+    <scroll-table t-class="table is-striped order-items"><br />
+      <thead slot="thead"><br />
+        <tr><br />
+          <th class="col-code">Код</th><br />
+          <th class="col-brand">Бренд</th><br />
+          <th class="col-descr">Наименование</th><br />
+          <th class="col-price">Цена</th><br />
+          <th class="col-qty">Кол-во</th><br />
+          <th class="col-sum">Сумма</th><br />
+        </tr><br />
+      </thead><br />
+      <tbody><br />
+        <tr v-for="(item, key) in orderItems" :key="key"><br />
+          <td class="col-code">{{item.good.code}}</td><br />
+          <td class="col-brand">{{item.good.brand}}</td><br />
+          <td class="col-descr">{{item.good.description}}</td><br />
+          <td class="col-price">{{money(item.price)}}</td><br />
+          <td class="col-qty">{{item.qty}}</td><br />
+          <td class="col-sum">{{money(item.price * item.qty)}}</td><br />
+        </tr><br />
+      </tbody><br />
+    </scroll-table><br />
+  </modal><br />
+</template></p>
+<script>
+import Modal from '@/components/common/Modal'
+import ScrollTable from '@/components/common/ScrollTable'
+import { mapGetters, mapActions } from 'vuex'
+
+export default {
+  name: 'order',
+  data () {
+    return {
+      money: utils.money
+    }
+  },
+  props: [
+    'isActive'
+  ],
+  components: {
+    Modal,
+    ScrollTable
+  },
+  beforeMount () {
+  },
+  computed: {
+    active () {
+      return this.isActive
+    },
+    ...mapGetters([
+      'order',
+      'orderItems',
+      'orderTotal',
+      'orderSize',
+      'userCustomers'
+    ])
+  },
+  methods: {
+    close () {
+      this.$emit('close')
+    },
+    saveOrder () {
+      this.createOrder()
+      console.log('Save order')
+      this.$emit('close')
+      this.$router.push('/orders')
+    },
+    ...mapActions([
+      'createOrder',
+      'loadUserCustomers'
+    ])
+  }
+}
+
+</script>
+
+<style lang="scss">
+.order-items{
+  table-layout: fixed;
+  .col-code, .col-brand{
+    width: 10%;
+  }
+  .col-price,.col-qty,.col-sum{
+    width: 15%;
+  }
+  td{
+        text-align: right;
+
+  }
+}
+</style></article></body></html>

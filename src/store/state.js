@@ -31,7 +31,7 @@ initialState.goods = {
     currentPage: 1
   },
   options: {
-    perPage: 12,
+    perPage: 20,
     lastKey: '',
     lastPage: false,
 //      orderBy: '.key'

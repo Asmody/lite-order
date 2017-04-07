@@ -1,5 +1,5 @@
 <template>
-  <header>
+  <header class="lk-header">
     <nav class="nav has-shadow">
       <div class="nav-left">
         <router-link class="nav-item" v-for="(route,idx) in routes" :key="idx" v-if="route.name && !route.meta.hidden" :to="route.path">
@@ -48,12 +48,6 @@ export default {
 </script>
 
 <style lang="scss">
-header{
-  width: 100%;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-}
 .nav-item{
   text-transform: uppercase;
 }

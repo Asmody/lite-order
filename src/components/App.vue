@@ -1,13 +1,11 @@
 <template>
-  <div id="app">
+  <div id="app" class="lk">
     <spinner></spinner>
     <template v-if="isLoggedIn">
       <app-nav></app-nav>
-      <section id="page" class="section">
+      <section id="page" class="lk-body">
         <error-msg></error-msg>
-        <div class="container is-fluid">
-          <router-view></router-view>
-        </div>
+        <router-view></router-view>
       </section>
     </template>
     <template v-else>
@@ -50,19 +48,40 @@ $footerHeight: 60px;
 html{
   position: relative;
   height: 100%;
-  min-height: 100%;
   overflow: hidden;
 }
 body{
-  margin-bottom: $footerHeight; 
-  min-height: 100vh;
-  height: 1000vh;
-}
-#app{
   height: 100vh;
+  margin: 0;
+  padding: 0;
 }
-#page{
-  height: calc(100vh-$footerHeight);
+.lk{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  &-header{
+    height: 50px;
+  }
+  &-footer{
+    height: 50px;
+  }
+  &-body{
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    > *{
+      flex: 0 0 auto;
+      overflow: auto;
+    }
+    &-main,
+    .full-view{
+      flex: 1;
+      display: flex;
+      height: 100%;
+      padding: 0.75rem;
+    }
+  }
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s

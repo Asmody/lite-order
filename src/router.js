@@ -53,8 +53,6 @@ router.beforeEach( (to, from, next) => {
   const auth = router.app.$options.store.state.auth
   const user = router.app.$options.store.state.user
 
-  console.log('User: '+user.email )
-  console.log('Logged in: '+ !!user.id )
   if (to.meta.requiresAuth && !user.id) {
     next({
       path: '/login',

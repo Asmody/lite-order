@@ -1,6 +1,18 @@
 <template>
-  <table id="goods-list" class="table is-striped is-scroll">
-    <thead>
+  <scroll-table t-class="table is-striped goods-list">
+    <div class="level" slot="tcaption">
+      <div class="level-left">
+        <div class="level-item">
+          <quick-search></quick-search>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item>">
+          <pagination></pagination>
+        </div>
+      </div>
+    </div>
+    <thead slot="thead">
       <tr>
         <th class="col-code">Код</th>
         <th class="col-brand">Бренд</th>
@@ -16,15 +28,19 @@
         <td class="col-descr"><div>{{good.description.substr(0, 135)}}</div></td>
         <td class="col-price">{{money(good.price)}}</td>
         <td class="col-qty">
-          <input class="input is-small good-qty" type="number" min="0" maxlength="10" v-model="good.qty" @input="(e)=>{updateQty(good, e)}" />
+          <input class="input is-small good-qty" type="number" min="0" maxlength="10" v-model.number="good.qty" @input="(e)=>{updateQty(good, e)}" />
         </td>
       </tr>
     </tbody>
-  </table>
+  </scroll-table>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+
+import ScrollTable from '@/components/common/ScrollTable'
+import QuickSearch from '@/components/catalog/QuickSearch'
+import Pagination from '@/components/catalog/Pagination'
 
 export default {
   name: 'goods-list',
@@ -32,6 +48,11 @@ export default {
     return {
       money: utils.money
     }
+  },
+  components: {
+    ScrollTable,
+    QuickSearch,
+    Pagination
   },
   computed: {
     ...mapGetters([
@@ -61,47 +82,31 @@ export default {
 
 </script>
 
-<style lang="scss" scoped>
-#goods-list{
+<style lang="scss">
+
+.goods-list {
   table-layout: fixed;
-}
-.is-scroll{
-  tbody{
-    display: block;
-    max-height: 100%;
-    width: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
+  tr.in-order{
+    font-weight: bold;
   }
-  tr{
-    display: table;
-    table-layout: fixed;
-    width: 100%;
-    td{
-      overflow: hidden;
-      height: 5vh;
-    }
+  .col-code, .col-brand{
+    width:10%;
+    overflow: hidden;
   }
-}
-.col-code, .col-brand{
-  width:10%;
-}
-.col-descr{
-  width:auto;
-}
-.col-price{
-  width:10%;
-}
-td.col-price{
-  text-align: right;
-}
-.col-qty{
-  width:15%;
-}
-tr.in-order{
-  font-weight: bold;
-}
-.good-qty{
-  text-align: right;
+  .col-descr{
+    width:auto;
+  }
+  .col-price{
+    width:10%;
+  }
+  td.col-price{
+    text-align: right;
+  }
+  .col-qty{
+    width:15%;
+  }
+  .good-qty{
+    text-align: right;
+  }
 }
 </style>

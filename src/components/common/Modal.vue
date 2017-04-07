@@ -39,3 +39,13 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.modal-card{
+  width: 95%;
+  &-body{
+    display: flex;
+    flex-direction: column;
+  }
+}
+</style>
