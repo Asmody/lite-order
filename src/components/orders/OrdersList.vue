@@ -1,6 +1,18 @@
 <template>
-  <table id="orders-list" class="table">
-    <thead>
+  <scroll-table id="orders-list" t-class="table is-striped orders-list">
+    <div class="level" slot="tcaption">
+      <div class="level-left">
+        <div class="level-item">
+          Поиск
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <pagination></pagination>
+        </div>
+      </div>
+    </div>
+    <thead slot="thead">
       <tr>
         <th>#</th>
         <th>Дата</th>
@@ -18,11 +30,14 @@
         <td>actions</td>
       </tr>
     </tbody>
-  </table>
+  </scroll-table>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+
+import ScrollTable from '@/components/common/ScrollTable'
+import Pagination from '@/components/orders/Pagination'
 
 export default {
   name: 'orders-list',
@@ -30,6 +45,10 @@ export default {
     return {
       money: utils.money
     }
+  },
+  components: {
+    ScrollTable,
+    Pagination
   },
   beforeMount () {
     this.loadOrdersList()
@@ -48,5 +67,8 @@ export default {
 </script>
 
 <style lang="scss">
+.orders-list{
+  table-layout: fixed;
   
+}
 </style>

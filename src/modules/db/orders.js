@@ -6,7 +6,6 @@ export default {
     db.ref('options/orderNumber').off()
     return db.ref('options/orderNumber').on('value', snap => {
       const orderNumber = _.defaultTo(1 * snap.val(), 1)
-      console.log('Order num: ' + orderNumber)
       return todo(orderNumber)
     })
   },
@@ -23,7 +22,7 @@ export default {
       return this.incOrderNumber()
     })
   },
-  getOrders (user) {
+  getOrders (user, todo) {
     return fb.getCollection('orders')
     .then(snap => {
       let items = []
@@ -33,7 +32,7 @@ export default {
           ...item.val()
         })
       })
-      return items
+      return todo(items)
     })
   }
 }
