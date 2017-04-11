@@ -68,7 +68,7 @@ body{
   &-body{
     flex: 1;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     overflow: hidden;
     > *{
       flex: 0 0 auto;

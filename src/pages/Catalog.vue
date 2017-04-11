@@ -5,7 +5,10 @@
         <goods-list></goods-list>
       </div>
       <div class="column">
+      <aside class="aside">
         <cart></cart>
+        <group-list></group-list>
+        </aside>
       </div>
     </div>
   </div>
@@ -33,5 +36,12 @@ export default {
 </script>
 
 <style lang="scss">
-
+.aside{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  > *{
+    flex: 0 0 auto;
+  }
+}
 </style>

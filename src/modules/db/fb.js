@@ -1,8 +1,8 @@
 import db from '@/db'
 
-export const getCollection = (collection, orderBy) => {
-  orderBy = orderBy || '.key'
+export const makeQuery = (collection, orderBy) => {
   const dbRef = db.ref(collection)
+  orderBy = orderBy || '.key'
   let query = null
   if (orderBy == '.key') {
     query = dbRef.orderByKey()
@@ -11,7 +11,17 @@ export const getCollection = (collection, orderBy) => {
   } else {
     query = dbRef.orderByChild(orderBy)
   }
-  return query.once('value')
+  return query
+}
+
+export const getCollection = (collection, orderBy) => {
+  return makeQuery(collection, orderBy).once('value')
+}
+
+export const getCollectionOn = (collection, orderBy, success, reject) => {
+  const query = makeQuery(collection, orderBy)
+  query.off()
+  return query.on('value', success, reject)
 }
 
 export const insertInto = (collection, item) => {

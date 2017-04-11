@@ -22,17 +22,17 @@ export default {
       return this.incOrderNumber()
     })
   },
-  getOrders (user, todo) {
-    return fb.getCollection('orders')
-    .then(snap => {
+  getOrders (user, success, reject) {
+    return db.ref('orders').orderByChild('date').on('value', snapshot => {
       let items = []
-      snap.forEach(item => {
+      snapshot.forEach(snap => {
         items.push({
-          id: item.key,
-          ...item.val()
+          id: snap.key,
+          ...snap.val()
         })
       })
-      return todo(items)
-    })
+      success(items)
+    },
+    error => reject(error))
   }
 }

@@ -18,11 +18,11 @@ if (localStorage.getItem(STORAGE_KEY)) {
   }
 }
 initialState.db = {
-  goods: [],
-  prices: {},
-  goodsGroups: [],
-  orders: [],
-  customers: {}
+  goods: null,
+  prices: null,
+  goodsGroups: null,
+  orders: null,
+  customers: null
 }
 initialState.goods = {
   list: [],

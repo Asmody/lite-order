@@ -1,7 +1,7 @@
 <template>
   <div id="orders" class="full-view">
     <div class="columns">
-      <div class="column is-9">
+      <div class="column is-12">
         <div class="orders-list-wrap">
           <orders-list></orders-list>
         </div>

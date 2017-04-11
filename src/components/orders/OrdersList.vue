@@ -14,20 +14,20 @@
     </div>
     <thead slot="thead">
       <tr>
-        <th>#</th>
-        <th>Дата</th>
-        <th>Клиент</th>
-        <th>Сумма</th>
-        <th></th>
+        <th class="col-num">#</th>
+        <th class="col-date">Дата</th>
+        <th class="col-cstmr">Клиент</th>
+        <th class="col-sum">Сумма</th>
+        <th class="col-actions"></th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="order in orders" :key="order.id">
-        <td>{{order.number}}</td>
-        <td>{{order.date}}</td>
-        <td>customer</td>
-        <td>{{money(order.total)}}</td>
-        <td>actions</td>
+        <td class="col-num">{{order.number}}</td>
+        <td class="col-date">{{dateFmt(order.date)}}</td>
+        <td class="col-cstmr">{{ldGet(order, ['customer', 'description'], '')}}</td>
+        <td class="col-sum">{{moneyFmt(order.total)}}</td>
+        <td class="col-actions">actions</td>
       </tr>
     </tbody>
   </scroll-table>
@@ -43,7 +43,6 @@ export default {
   name: 'orders-list',
   data () {
     return {
-      money: utils.money
     }
   },
   components: {
@@ -59,6 +58,9 @@ export default {
     ])
   },
   methods: {
+    moneyFmt: utils.money,
+    dateFmt: utils.date,
+    ldGet: _.get,
     ...mapActions([
       'loadOrdersList'
     ])
@@ -69,6 +71,20 @@ export default {
 <style lang="scss">
 .orders-list{
   table-layout: fixed;
-  
+  .col-num{
+    width: 4rem;
+  }
+  .col-date{
+    width: 10rem;
+  }
+  .col-actions{
+    width: 10rem;
+  }
+  .col-sum{
+    width: 10rem;
+  }
+  td.col-sum{
+    text-align: right;
+  }
 }
 </style>
