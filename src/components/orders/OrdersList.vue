@@ -18,6 +18,7 @@
         <th class="col-date">Дата</th>
         <th class="col-cstmr">Клиент</th>
         <th class="col-sum">Сумма</th>
+        <th class="col-state">Статус</th>
         <th class="col-actions"></th>
       </tr>
     </thead>
@@ -27,6 +28,7 @@
         <td class="col-date">{{dateFmt(order.date)}}</td>
         <td class="col-cstmr">{{ldGet(order, ['customer', 'description'], '')}}</td>
         <td class="col-sum">{{moneyFmt(order.total)}}</td>
+        <td class="col-state">state</td>
         <td class="col-actions">actions</td>
       </tr>
     </tbody>
@@ -81,6 +83,9 @@ export default {
     width: 10rem;
   }
   .col-sum{
+    width: 10rem;
+  }
+  .col-state{
     width: 10rem;
   }
   td.col-sum{

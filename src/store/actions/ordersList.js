@@ -1,29 +1,21 @@
 import db from '@/modules/db'
 
 export const loadOrdersFromDB = ({dispatch, commit, state}, afterLoad) => {
-  return new Promise((resolve, reject) => {
-    db.getOrders(state.user,
-      items => {
-        commit('SET_DB_ORDERS_LIST', items)
-        afterLoad()
-        resolve()
-      },
-      error => reject(error)
-    )
+  return db.getOrders({
+    user: state.user,
+    success (items) {
+      commit('SET_DB_ORDERS_LIST', items)
+      afterLoad()
+    }
   })
 }
 
 export const loadOrdersList = ({dispatch, commit, state}) => {
   if (state.db.orders === null) {
-    return dispatch('loadOrdersFromDB', afterLoadFromDB)
+    dispatch('loadOrdersFromDB', 
+      () => commit('LOAD_ORDERS_LIST')
+    )
   } else {
-    return new Promise((resolve, reject) => {
-      afterLoadFromDB()
-      resolve()
-    })
+    commit('LOAD_ORDERS_LIST')
   }
-}
-
-const afterLoadFromDB = () => {
-  commit('LOAD_ORDERS_LIST', state.db.orders)
 }

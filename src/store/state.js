@@ -20,7 +20,7 @@ if (localStorage.getItem(STORAGE_KEY)) {
 initialState.db = {
   goods: null,
   prices: null,
-  goodsGroups: null,
+  groups: null,
   orders: null,
   customers: null
 }
@@ -52,7 +52,8 @@ initialState.order = {
   items: {},
   comment: '',
   customerRef: null,
-  number: 0
+  number: 0,
+  state: 0
 }
 initialState.error = ''
 initialState.loading = false

@@ -1,11 +1,8 @@
 import Vue from 'vue'
 
-export const LOAD_DB = (state, {goods, prices, groups}) => {
-
-}
-
 export const SET_DB_GOODS = (state, data) => {
   Vue.set(state.db, 'goods', data)
+  RECALC_GOODS_NAV(state)
 }
 
 export const SET_DB_PRICES = (state, data) => {
@@ -13,7 +10,7 @@ export const SET_DB_PRICES = (state, data) => {
 }
 
 export const SET_DB_GROUPS = (state, data) => {
-  Vue.set(state.db, 'goodsGroups', data)
+  Vue.set(state.db, 'groups', data)
 }
 
 export const RECALC_GOODS_NAV = (state, goodsLength) => {
@@ -55,6 +52,7 @@ export const SET_GOODS_FILTER = (state, filter) => {
 }
 
 export const LOAD_GROUPS_LIST = (state, items) => {
+  items = items || state.db.groups
   if (state.groups.filter) {
     Vue.set(state.groups, 'list', _.filter(items, el => {
       return el.name.toLowerCase().indexOf(state.groups.filter) != -1
@@ -65,7 +63,7 @@ export const LOAD_GROUPS_LIST = (state, items) => {
 }
 
 export const SET_GROUPS_FILTER = (state, filter) => {
-  state.groups.filter = filter
+  state.groups.filter = filter.toLowerCase()
 }
 
 export const ADD_SELECTED_GROUP = (state, group) => {

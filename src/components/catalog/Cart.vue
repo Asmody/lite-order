@@ -27,21 +27,23 @@ export default {
   data () {
     return {
       showOrder: false,
-      money: utils.money
     }
   },
   components: {
     Order
   },
   beforeMount () {
-    this.initOrder()
+    if (this.$store.state.order.number == 0) {
+      this.initOrder()
+    }
   },
   computed: {
     ...mapGetters({
-      total: 'orderTotal'
+      total: 'orderTotal',
     })
   },
   methods: {
+    money: utils.money,
     ...mapActions([
       'initOrder',
       'clearOrder'

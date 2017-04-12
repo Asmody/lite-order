@@ -22,17 +22,22 @@ export default {
       return this.incOrderNumber()
     })
   },
-  getOrders (user, success, reject) {
-    return db.ref('orders').orderByChild('date').on('value', snapshot => {
-      let items = []
-      snapshot.forEach(snap => {
-        items.push({
-          id: snap.key,
-          ...snap.val()
-        })
-      })
-      success(items)
-    },
-    error => reject(error))
+  getOrders ({user, success}) {
+    return new Promise((resolve, reject) => {
+      db.ref('orders').orderByChild('date').on('value', 
+        snapshot => {
+          let items = []
+          snapshot.forEach(snap => {
+            items.push({
+              id: snap.key,
+              ...snap.val()
+            })
+          })
+          success(items)
+          resolve()
+        },
+        reject
+      )
+    })
   }
 }

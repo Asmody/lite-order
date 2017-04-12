@@ -22,7 +22,7 @@ export const clearOrder = ({commit}) => {
 export const createOrder = ({dispatch, commit, state}) => {
   return db.newOrder({
     date: (new Date).toISOString(),
-    status: 1,
+    state: 1,
     user: {
       id: state.user.id,
       email: state.user.email

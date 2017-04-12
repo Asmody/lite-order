@@ -1,20 +1,17 @@
 import db from '@/modules/db'
 
-export const loadDb = ({commit, dispatch, state}) => {
+export const loadGoodsDb = ({commit, dispatch, state}, resolve) => {
   dispatch('setLoading', true)
   return Promise.all([
     db.getGoods({orderBy: state.goods.options.orderBy}),
-    db.getPrices(),
-    db.getGroups(),
+    db.getPrices()
   ])
   .then(result => {
-    let [
-      goods,
-      prices,
-      groups
-    ] = result
+    let [goods, prices] = result
+    commit('SET_DB_GOODS', goods)
+    commit('SET_DB_PRICES', prices)
     dispatch('setLoading', false)
-    return commit('LOAD_DB', {goods, prices, groups})
+    resolve()
   })
   .catch(error => {
     dispatch('setLoading', false)
@@ -23,14 +20,14 @@ export const loadDb = ({commit, dispatch, state}) => {
 }
 
 export const loadGoodsList = ({dispatch, commit, state}) => {
-  let pr = new Promise((resolve, reject) => {
+  new Promise((resolve, reject) => {
     if (state.db.goods === null) {
-      resolve(dispatch('loadDb'))
+      dispatch('loadGoodsDb', resolve)
     } else {
-      resolve(true)
+      resolve()
     }
   })
-  pr.then((some) => {
+  .then(() => {
     let perPage = state.goods.options.perPage
     let currentPage = state.goods.nav.currentPage
     let goodsDbList = (state.goods.filtered.length ? state.goods.filtered : state.db.goods )
@@ -65,32 +62,19 @@ export const clearGoodsFilter = ({dispatch, commit, state}) => {
   dispatch('loadGoodsList')
 }
 
-export const loadGroupsFromDB = ({dispatch, commit, state}, afterLoad) => {
-  return new Promise((resolve, reject) => {
-    db.getGroups(
-      items => {
-        commit('SET_DB_GROUPS', items)
-        afterLoad()
-        resolve()
-      }, 
-      error => reject(error)
-    )
-  })
+export const loadGroupsFromDB = ({dispatch, commit, state}) => {
+  return db.getGroups()
+    .then(items => commit('SET_DB_GROUPS', items))
+    .catch(error => dispatch('setError', error.message))
 }
 
 export const loadGroupsList = ({dispatch, commit, state}) => {
   if (state.db.groups === null) {
-    return dispatch('loadGroupsFromDB', afterGroupsLoadFromDB)
+    dispatch('loadGroupsFromDB')
+    .then(() => commit('LOAD_GROUPS_LIST'))
   } else {
-    return new Promise((resolve, reject) => {
-      afterGroupsLoadFromDB()
-      resolve()
-    })
+    commit('LOAD_GROUPS_LIST')
   }
-}
-
-const afterGroupsLoadFromDB = () => {
-  commit('LOAD_GROUPS_LIST', state.db.goodsGroups)
 }
 
 export const setGroupsFilter = ({dispatch, commit, state}, filter) => {

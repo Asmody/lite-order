@@ -1,6 +1,7 @@
 import Vue from 'vue'
 
 export const LOAD_ORDERS_LIST = (state, items) => {
+  items = items || state.db.orders
   Vue.set(state, 'orders', items)
 }
 
