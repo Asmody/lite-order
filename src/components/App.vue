@@ -1,18 +1,14 @@
-<template>
-  <div id="app" class="lk">
-    <spinner></spinner>
-    <template v-if="isLoggedIn">
-      <app-nav></app-nav>
-      <section id="page" class="lk-body">
-        <error-msg></error-msg>
-        <router-view></router-view>
-      </section>
-    </template>
-    <template v-else>
-      <router-view></router-view>
-    </template>
-    <app-footer></app-footer>
-  </div>
+<template lang="pug">
+  #app.lk
+    spinner
+    template(v-if="isLoggedIn")
+      app-nav
+      section#page.lk-body
+        error-msg
+        router-view
+    template(v-else)
+      router-view
+    app-footer
 </template>
 
 <script>

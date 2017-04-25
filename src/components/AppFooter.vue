@@ -1,9 +1,6 @@
-<template>
-  <footer>
-    <div class="container is-fluid">
-      id: {{user.id}} / {{isLoggedIn ? 'logged in' : 'logged out'}}
-    </div>
-  </footer>
+<template lang="pug">
+  footer
+    .container.is-fluid id: {{user.id}} / {{isLoggedIn ? 'logged in' : 'logged out'}}
 </template>
 
 <script>
