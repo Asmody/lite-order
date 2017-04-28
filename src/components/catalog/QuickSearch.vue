@@ -1,13 +1,19 @@
 <template>
-  <p class="control has-addons">
+  <div class="field has-addons">
+  <p class="control">
     <input v-model="search" class="input" type="text" placeholder="код или наименование" />
+    </p>
+    <p class="control">
     <button class="button" @click="makeSeatch">
       <vf-icon icon="search" fixed />
     </button>
+    </p>
+    <p class="control">
     <button class="button" @click="clearSearch">
       <vf-icon icon="times" fixed />
     </button>
-  </p>
+    </p>
+  </div>
 </template>
 
 <script>

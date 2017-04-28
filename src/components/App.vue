@@ -39,50 +39,47 @@ export default {
 }
 </script>
 
-<style lang="scss">
-$footerHeight: 60px;
-html{
-  position: relative;
-  height: 100%;
-  overflow: hidden;
-}
-body{
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-}
-.lk{
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  &-header{
-    height: 50px;
-  }
-  &-footer{
-    height: 50px;
-  }
-  &-body{
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    > *{
-      flex: 0 0 auto;
-      overflow: auto;
-    }
+<style lang="sass">
+$footerHeight: 60px
+html
+  position: relative
+  height: 100%
+  overflow: hidden
+
+body
+  height: 100vh
+  margin: 0
+  padding: 0
+
+.lk
+  height: 100%
+  display: flex
+  flex-direction: column
+  &-header
+    height: 50px
+  &-footer
+    height: 50px
+  &-body
+    flex: 1
+    display: flex
+    flex-direction: column
+    overflow: hidden
+    > *
+      flex: 0 0 auto
+      overflow: auto
     &-main,
-    .full-view{
-      flex: 1;
-      display: flex;
-      height: 100%;
-      padding: 0.75rem;
-    }
-  }
-}
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active для <2.1.8 */ {
+    .full-view
+      flex: 1
+      display: flex
+      height: 100%
+      padding: 0.75rem
+
+.fade-enter,
+.fade-leave-to
   opacity: 0
-}
+
+.fade-enter-active,
+.fade-leave-active
+  transition: opacity .5s
+
 </style>

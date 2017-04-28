@@ -18,12 +18,11 @@ export default {
 
 </script>
 
-<style lang="scss">
-$footerHeight: 60px;
-footer{
+<style lang="sass">
+$footerHeight: 60px
+footer
   width: 100%;
-  height: $footerHeight;
-  line-height: $footerHeight;
-  background: #f5f5f5;
-}
+  height: $footerHeight
+  line-height: $footerHeight
+  background: #f5f5f5
 </style>

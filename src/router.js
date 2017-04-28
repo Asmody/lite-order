@@ -3,36 +3,34 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
+import Login from '@/pages/Login.vue'
+
+import Catalog from '@/pages/Catalog.vue'
+import Orders from '@/pages/Orders.vue'
+import Profile from '@/pages/Profile.vue'
+
 export let routes = [
   { path: '/', redirect: '/catalog' },
   {
     path: '/catalog',
     name: 'Каталог',
-    component (resolve) {
-      require(['@/pages/Catalog.vue'], resolve)
-    },
+    component: Catalog,
     meta: { requiresAuth: true }
   },
   {
     path: '/orders',
     name: 'Заказы',
-    component (resolve) {
-      require(['@/pages/Orders.vue'], resolve)
-    },
+    component: Orders,
     meta: { requiresAuth: true }
   },
   {
     path: '/login',
-    component (resolve) {
-      require(['@/pages/Login.vue'], resolve)
-    },
+    component: Login,
     meta: { hidden: true, requiresAuth: false }
   },
   {
     path: '/profile',
-    component (resolve) {
-      require(['@/pages/Profile.vue'], resolve)
-    },
+    component: Profile,
     meta: { hidden: true, requiresAuth: true }
   },
 ]

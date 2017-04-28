@@ -9,7 +9,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "bulma": "^0.3.2",
+    "bulma": "^0.4.1",
     "firebase": "^3.7.1",
     "lodash": "^4.17.4",
     "vue": "^2.2.2",

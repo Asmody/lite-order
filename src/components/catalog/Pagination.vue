@@ -1,5 +1,5 @@
 <template>
-  <nav class="pagination">
+  <nav class="pagination is-small">
     <div class="field">
     <p class="control">
       <span class="select is-small" >

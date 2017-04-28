@@ -1,24 +1,23 @@
-<template>
-  <header class="lk-header">
-    <nav class="nav has-shadow">
-      <div class="nav-left">
-        <router-link class="nav-item" v-for="(route,idx) in routes" :key="idx" v-if="route.name && !route.meta.hidden" :to="route.path">
-          {{ route.name }}
-        </router-link>
-      </div>
-      <div class="nav-right">
-        <router-link class="nav-item" :to="'/profile'">
-          <span class="icon">
-            <vf-icon icon="user"></vf-icon>
-          </span>
-          {{ user.email }}
-        </router-link>
-        <a class="nav-item" @click="logout">
-          Выход
-        </a>
-      </div>
-    </nav>
-  </header>
+<template lang="pug">
+  header.lk-header
+    nav.nav.has-shadow
+      .nav-left
+        router-link.nav-item(
+          v-for="(route,idx) in routes"
+          :key="idx"
+          v-if="route.name && !route.meta.hidden" 
+          :to="route.path"
+        ) {{ route.name }}
+      .nav-right
+        router-link.nav-item(
+          :to="'/profile'"
+        )
+          span.icon
+            vf-icon(icon="user") 
+          | {{ user.email }}
+        a.nav-item(
+          @click="logout"
+        ) Выход
 </template>
 
 <script>
@@ -47,11 +46,9 @@ export default {
 
 </script>
 
-<style lang="scss">
-.nav-item{
-  text-transform: uppercase;
-}
-.nav-item.is-active{
-  border-bottom: #72d0eb 2px solid;
-}
+<style lang="sass">
+.nav-item
+  text-transform: uppercase
+  &.is-active
+    border-bottom: #72d0eb 2px solid
 </style>

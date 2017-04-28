@@ -1,13 +1,6 @@
-<template>
-  <div id="orders" class="full-view">
-    <div class="columns">
-      <div class="column is-12">
-        <div class="orders-list-wrap">
-          <orders-list></orders-list>
-        </div>
-      </div>
-    </div>
-  </div>
+<template lang="pug">
+  #orders.full-view
+    orders-list
 </template>
 
 <script>
@@ -22,6 +15,6 @@ export default {
 
 </script>
 
-<style lang="scss">
+<style lang="sass">
 
 </style>
