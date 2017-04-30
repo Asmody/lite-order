@@ -64,7 +64,7 @@
           </button>        
           </p>
           <p class="control">
-          <button class="button is-small is-danger is-outlined">
+          <button class="button is-small is-danger is-outlined" @click="delOrder(order)">
             <span class="icon is-small">
               <vf-icon icon="trash-o"></vf-icon>
             </span>
@@ -145,11 +145,30 @@ export default {
     opened (order) {
       return !!this.openedOrders[order.id]
     },
+    delOrder (order) {
+      utils.swal({
+        title: "Подтвердите удаление",
+        text: `Удалить заказ ${order.id}?`,
+        type: 'warning',
+        cancelButtonText: 'Отменить',
+        showConfirmButton: true,
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true
+      },
+      isConfirm => {
+        if (isConfirm) {
+          this.deleteOrder(order)
+        }
+        swal.close()
+      })
+    },
     moneyFmt: utils.money,
     dateFmt: utils.date,
     ldGet: _.get,
     ...mapActions([
-      'loadOrdersList'
+      'loadOrdersList',
+      'deleteOrder'
     ])
   }
 }

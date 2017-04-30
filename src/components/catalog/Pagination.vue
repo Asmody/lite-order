@@ -1,13 +1,12 @@
 <template>
-  <nav class="pagination is-small">
-    <div class="field">
+    <nav class="pagination">
     <p class="control">
-      <span class="select is-small" >
+      <span class="select" >
         <select v-model="perPage" @change="perPageChange">
           <option v-for="pp in perPageList" :value="pp">{{pp}}</option>
         </select>
       </span>
-    </p></div>
+    </p>
     <a class="pagination-link" @click="setGoodsListFirstPage"><vf-icon icon="fast-backward" fixed /></a>
     <a class="pagination-link" @click="setGoodsListPrevPage"><vf-icon icon="step-backward" fixed /></a>
     <a class="pagination-link is-current">{{goodsNav.currentPage}}</a>
@@ -54,3 +53,9 @@ export default {
 
 }
 </script>
+
+<style lang="sass">
+#goods-pagination
+  display: flex
+  flex-direction: row
+</style>

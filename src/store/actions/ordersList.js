@@ -19,3 +19,9 @@ export const loadOrdersList = ({dispatch, commit, state}) => {
     commit('LOAD_ORDERS_LIST')
   }
 }
+
+export const deleteOrder = ({dispatch, commit, state}, order) => {
+  if (order && order.id) {
+    return db.deleteOrder(order.id)
+  }
+} 

@@ -45,7 +45,7 @@ export default {
   }
   > *{
     flex: 0 0 auto;
-    overflow: auto;
+    overflow: none;
   }
   &-caption{
   }

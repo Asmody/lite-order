@@ -39,5 +39,8 @@ export default {
         reject
       )
     })
+  },
+  deleteOrder (orderId) {
+    return db.ref('orders/' + orderId).remove()
   }
 }
