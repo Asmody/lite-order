@@ -5,7 +5,7 @@
         <div class="level-item">
           <div class="field">
             <p class="control">
-              <span class="select is-small">
+              <span class="select ">
                 <select name="" id="">
                   <option value="">Все</option>
                   <option value="">Отправленные</option>
@@ -75,36 +75,7 @@
       </tr>
       <tr v-if="opened(order)">
         <td colspan="6" class="col-items">
-         <div class="box">
-          <table>
-            <thead>
-              <tr>
-                <th>Код</th>
-                <th>Наименование</th>
-                <th>Бренд</th>
-                <th>Цена</th>
-                <th>Кол-во</th>
-                <th>Сумма</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, key) in order.items" :key="key">
-                <td>{{item.good.code}}</td>
-                <td>{{item.good.description}}</td>
-                <td>{{item.good.brand}}</td>
-                <td>{{moneyFmt(item.price)}}</td>
-                <td>{{item.qty}}</td>
-                <td>{{moneyFmt(item.price * item.qty)}}</td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <th colspan="5">Итого:</th>
-                <th>{{moneyFmt(0.0)}}</th>
-              </tr>
-            </tfoot>
-          </table>
-          </div>
+          <opened-order :order="order"></opened-order>
         </td>
       </tr>
       </template>
@@ -117,7 +88,8 @@ import Vue from 'vue'
 import { mapGetters, mapActions } from 'vuex'
 
 import ScrollTable from '@/components/common/ScrollTable'
-import Pagination from '@/components/orders/Pagination'
+import Pagination from './Pagination'
+import OpenedOrder from './OpenedOrder'
 
 export default {
   name: 'orders-list',
@@ -128,7 +100,8 @@ export default {
   },
   components: {
     ScrollTable,
-    Pagination
+    Pagination,
+    OpenedOrder
   },
   beforeMount () {
     this.loadOrdersList()
