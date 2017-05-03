@@ -1,28 +1,6 @@
 <template>
   <scroll-table id="orders-list" t-class="table is-striped orders-list">
-    <div class="level" slot="tcaption">
-      <div class="level-left">
-        <div class="level-item">
-          <div class="field">
-            <p class="control">
-              <span class="select ">
-                <select name="" id="">
-                  <option value="">Все</option>
-                  <option value="">Отправленные</option>
-                  <option value="">Утвержденные</option>
-
-                </select>
-              </span>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="level-right">
-        <div class="level-item">
-          <pagination></pagination>
-        </div>
-      </div>
-    </div>
+    <orders-filter slot="tcaption"></orders-filter>
     <thead slot="thead">
       <tr>
         <th class="col-num">#</th>
@@ -88,8 +66,11 @@ import Vue from 'vue'
 import { mapGetters, mapActions } from 'vuex'
 
 import ScrollTable from '@/components/common/ScrollTable'
-import Pagination from './Pagination'
+import OrdersFilter from './OrdersFilter'
 import OpenedOrder from './OpenedOrder'
+
+import Message from '@/plugins/Message'
+Vue.use(Message)
 
 export default {
   name: 'orders-list',
@@ -100,7 +81,7 @@ export default {
   },
   components: {
     ScrollTable,
-    Pagination,
+    OrdersFilter,
     OpenedOrder
   },
   beforeMount () {
@@ -119,21 +100,12 @@ export default {
       return !!this.openedOrders[order.id]
     },
     delOrder (order) {
-      utils.swal({
+      this.$msg.confirm({
         title: "Подтвердите удаление",
         text: `Удалить заказ ${order.id}?`,
-        type: 'warning',
-        cancelButtonText: 'Отменить',
-        showConfirmButton: true,
-        showCancelButton: true,
-        closeOnConfirm: false,
-        showLoaderOnConfirm: true
-      },
-      isConfirm => {
-        if (isConfirm) {
-          this.deleteOrder(order)
-        }
-        swal.close()
+      })
+      .then(isConfirm => {
+        this.deleteOrder(order)
       })
     },
     moneyFmt: utils.money,

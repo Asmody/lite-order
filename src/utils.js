@@ -5,6 +5,5 @@ module.exports = {
     currency: 'RUB',
     minimumFractionDigits: 2
   }).format,
-  date (dt) { return new Intl.DateTimeFormat('ru-RU').format(new Date(dt)) },
-  swal: require('sweetalert')
+  date (dt) { return new Intl.DateTimeFormat('ru-RU').format(new Date(dt)) }
 }

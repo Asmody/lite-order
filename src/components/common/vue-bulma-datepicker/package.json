@@ -1,0 +1,103 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "vue-bulma-datepicker",
+        "scope": null,
+        "escapedName": "vue-bulma-datepicker",
+        "name": "vue-bulma-datepicker",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/home/victor/WORK/lite-order"
+    ]
+  ],
+  "_from": "vue-bulma-datepicker@latest",
+  "_id": "vue-bulma-datepicker@1.3.2",
+  "_inCache": true,
+  "_location": "/vue-bulma-datepicker",
+  "_nodeVersion": "6.9.5",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/vue-bulma-datepicker-1.3.2.tgz_1492586509750_0.1471419429872185"
+  },
+  "_npmUser": {
+    "name": "luventa",
+    "email": "luventa@outlook.com"
+  },
+  "_npmVersion": "3.10.10",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "vue-bulma-datepicker",
+    "scope": null,
+    "escapedName": "vue-bulma-datepicker",
+    "name": "vue-bulma-datepicker",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#DEV:/",
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/vue-bulma-datepicker/-/vue-bulma-datepicker-1.3.2.tgz",
+  "_shasum": "2b0f14e65add5cce97606ea816948b7810d65f6f",
+  "_shrinkwrap": null,
+  "_spec": "vue-bulma-datepicker",
+  "_where": "/home/victor/WORK/lite-order",
+  "author": {
+    "name": "Fangdun Cai",
+    "email": "cfddream@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/vue-bulma/datepicker/issues"
+  },
+  "dependencies": {
+    "flatpickr": "2.4.2",
+    "vue-click-outside": "^1.0.2"
+  },
+  "description": "Datepicker Component for Vue Bulma",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "2b0f14e65add5cce97606ea816948b7810d65f6f",
+    "tarball": "https://registry.npmjs.org/vue-bulma-datepicker/-/vue-bulma-datepicker-1.3.2.tgz"
+  },
+  "gitHead": "fa5f4b77f248d2d21f49066dead4d0c960115fda",
+  "homepage": "https://github.com/vue-bulma/datepicker#readme",
+  "keywords": [
+    "vue",
+    "bulma",
+    "vue-bulma",
+    "vue-bulma-component",
+    "vue-bulma-datepicker",
+    "datepicker"
+  ],
+  "license": "MIT",
+  "main": "src/index.vue",
+  "maintainers": [
+    {
+      "name": "fundon",
+      "email": "cfddream@gmail.com"
+    },
+    {
+      "name": "luventa",
+      "email": "silentmic@qq.com"
+    }
+  ],
+  "name": "vue-bulma-datepicker",
+  "optionalDependencies": {},
+  "peerDependencies": {
+    "bulma": ">=0.2",
+    "vue": ">=2"
+  },
+  "readme": "# Datepicker\r\n\r\nDatepicker component is based on [flatpickr](https://github.com/chmln/flatpickr) for Vue Bulma.\r\n\r\n## Installation\r\n\r\n```\r\n$ npm install vue-bulma-datepicker --save\r\n```\r\n\r\n## Examples\r\n\r\n### Single Input\r\n\r\n```vue\r\n<template>\r\n  <datepicker placeholder=\"European Format ('d-m-Y')\" :config=\"{ dateFormat: 'd-m-Y', static: true }\"></datepicker>\r\n</template>\r\n\r\n<script>\r\nimport Datepicker from 'vue-bulma-datepicker'\r\n\r\nexport default {\r\n  components: {\r\n    Datepicker\r\n  }\r\n}\r\n</script>\r\n```\r\n\r\n### Wrap Input\r\n\r\n```vue\r\n<template>\r\n  <datepicker :config=\"{ wrap: true }\" readonly>\r\n    <a class=\"button\" data-toggle><i class=\"fa fa-calendar\"></i></a>\r\n    <a class=\"button\" data-clear><i class=\"fa fa-close\"></i></a>\r\n  </datepicker>\r\n</template>\r\n\r\n<script>\r\nimport Datepicker from 'vue-bulma-datepicker'\r\n\r\nexport default {\r\n  components: {\r\n    Datepicker\r\n  }\r\n}\r\n</script>\r\n```\r\n\r\n## Badges\r\n\r\n![](https://img.shields.io/badge/license-MIT-blue.svg)\r\n![](https://img.shields.io/badge/status-stable-green.svg)\r\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vue-bulma/datepicker.git"
+  },
+  "scripts": {},
+  "version": "1.3.2"
+}
