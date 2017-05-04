@@ -7,6 +7,7 @@ import Login from '@/pages/Login.vue'
 
 import Catalog from '@/pages/Catalog.vue'
 import Orders from '@/pages/Orders.vue'
+import Customers from '@/pages/Customers.vue'
 import Profile from '@/pages/Profile.vue'
 
 export let routes = [
@@ -21,6 +22,12 @@ export let routes = [
     path: '/orders',
     name: 'Заказы',
     component: Orders,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/customers',
+    name: 'Клиенты',
+    component: Customers,
     meta: { requiresAuth: true }
   },
   {
