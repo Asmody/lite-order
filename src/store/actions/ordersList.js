@@ -24,4 +24,8 @@ export const deleteOrder = ({dispatch, commit, state}, order) => {
   if (order && order.id) {
     return db.deleteOrder(order.id)
   }
-} 
+}
+
+export const filterOrdersByDate = ({dispatch, commit, state}, date) => {
+  commit('SET_ORDERS_FILTER', { date })
+}

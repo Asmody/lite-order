@@ -8,6 +8,7 @@ import * as actions from './actions/index.js'
 import * as getters from './getters'
 import plugins from './plugins'
 
+export { mutations }
 
 Vue.use(Vuex)
 Vue.use(VuexFire)

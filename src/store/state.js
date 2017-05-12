@@ -46,7 +46,8 @@ initialState.groups = {
   filter: ''
 }
 initialState.orders = {
-  list: []
+  list: [],
+  filter: {}
 }
 initialState.order = {
   items: {},

@@ -15,7 +15,7 @@
       template(v-for="order in orders")
         tr(:key="order.id")
           td.col-num
-            span.icon.is-small.open-order(@click="open(order)")
+            span.icon.is-small.open-row(@click="open(order)")
               vf-icon(:icon="opened(order) ? 'minus-square-o' : 'plus-square-o'")
             | {{order.number}}
           td.col-date {{dateFmt(order.date)}}
@@ -56,7 +56,7 @@ export default {
   name: 'orders-list',
   data () {
     return {
-      openedOrders: {}
+      openedRows: {}
     }
   },
   components: {
@@ -73,11 +73,11 @@ export default {
     ])
   },
   methods: {
-    open (order) {
-      Vue.set(this.openedOrders, order.id, !this.openedOrders[order.id])
+    open (row) {
+      Vue.set(this.openedRows, row.id, !this.openedRows[row.id])
     },
-    opened (order) {
-      return !!this.openedOrders[order.id]
+    opened (row) {
+      return !!this.openedRows[row.id]
     },
     delOrder (order) {
       this.$msg.confirm({
@@ -116,6 +116,6 @@ export default {
   td.col-sum
     text-align: right
     
-.open-order
+.open-row
   cursor: pointer
 </style>

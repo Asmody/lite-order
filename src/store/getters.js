@@ -19,7 +19,8 @@ export const orderItems = state => state.order.items
 export const orderTotal = state => state.order.total
 export const orderSize = state => _.size(state.order.items)
 
-export const orders = state => state.orders
+export const orders = state => state.orders.list
+export const ordersFilter = state => state.orders.filter
 
 export const customers = state => state.db.customers
 export const userCustomers = state => state.user.customers

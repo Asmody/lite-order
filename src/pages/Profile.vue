@@ -1,14 +1,24 @@
-<template>
-  <div class="profile">
-    {{user}}
-  </div>
+<template lang="pug">
+  #profile.full-view
+    .columns
+      .column id: {{ user.id }}
+    .columns
+      .column email: {{ user.email }}
+    .columns
+      .column
+        customers-list
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
+import CustomersList from '@/components/customers/CustomersList'
+
 export default {
   name: 'profile',
+  components: {
+    CustomersList
+  },
   computed: {
     ...mapGetters([
       'user'
@@ -22,6 +32,7 @@ export default {
 
 </script>
 
-<style lang="scss">
-
+<style lang="sass">
+#profile
+  flex-direction: column
 </style>

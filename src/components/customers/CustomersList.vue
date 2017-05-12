@@ -8,19 +8,32 @@
         th.col-inn ИНН
         th.col-phone Телефон
     tbody
-      tr(v-for="customer in customers" :key="customer.id")
-        td.col-descr {{ customer.description }}
-        td.col-inn {{ customer.inn }}
-        td.col-phone {{ customer.phone }}
+      template(v-for="customer in customers")
+        tr(:key="customer.id")
+          td.col-descr 
+            span.icon.is-small.open-row(@click="open(customer)")
+              vf-icon(:icon="opened(customer) ? 'minus-square-o' : 'plus-square-o'")
+            | {{ customer.description }}
+          td.col-inn {{ customer.inn }}
+          td.col-phone {{ customer.phone }}
+        tr(v-if="opened(customer)")
+          td(colspan=3)
+            .box {{ customer }}
 </template>
 
 <script>
+import Vue from 'vue'
 import { mapGetters, mapActions } from 'vuex'
 
 import ScrollTable from '@/components/common/ScrollTable'
 
 export default {
   name: 'customers-list',
+  data () {
+    return {
+      openedRows: {}
+    }
+  },
   components: {
     ScrollTable
   },
@@ -31,6 +44,15 @@ export default {
     ...mapGetters({
       customers: 'userCustomers'
     })
+  },
+  methods: {
+    open (row) {
+      Vue.set(this.openedRows, row.id, !this.openedRows[row.id])
+    },
+    opened (row) {
+      return !!this.openedRows[row.id]
+    },
+
   }
 }
 </script>
@@ -43,5 +65,8 @@ export default {
     width: 10rem
   .col-phone
     width: 10rem
-  
+
+.open-row
+  cursor: pointer
+
 </style>

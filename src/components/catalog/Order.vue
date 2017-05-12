@@ -44,7 +44,9 @@
           <td class="col-brand">{{item.good.brand}}</td>
           <td class="col-descr">{{item.good.description}}</td>
           <td class="col-price">{{money(item.price)}}</td>
-          <td class="col-qty">{{item.qty}}</td>
+          <td class="col-qty">
+            <input class="input is-small good-qty" type="number" min="0" maxlength="10" v-model.number="item.qty" @input="(e)=>{updateQty(item.good, e)}" />
+          </td>
           <td class="col-sum">{{money(item.price * item.qty)}}</td>
         </tr>
       </tbody>
@@ -95,9 +97,20 @@ export default {
       this.$emit('close')
       this.$router.push('/orders')
     },
+    updateQty (good, e) {
+      let val = e.target.valueAsNumber
+      if (val === NaN) {
+        e.target.value = 0
+      } else {
+        e.target.value = val
+      }
+      this.updateOrder({good, qty:val})
+
+    },
     ...mapActions([
       'createOrder',
-      'loadUserCustomers'
+      'loadUserCustomers',
+      'updateOrder'
     ])
   }
 }
