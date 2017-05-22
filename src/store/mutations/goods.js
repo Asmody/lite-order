@@ -23,7 +23,6 @@ export const RECALC_GOODS_NAV = (state, goodsLength) => {
 }
 
 export const LOAD_GOODS_LIST = (state, items) => {
-  Vue.set(state.goods, 'list', items)
 }
 
 export const SET_GOODS_PER_PAGE = (state, perPage) => {
@@ -32,17 +31,6 @@ export const SET_GOODS_PER_PAGE = (state, perPage) => {
 }
 
 export const FILTER_GOODS = (state) => {
-  if (state.goods.filter || state.groups.selected.length) {
-    state.goods.filtered = _.filter(state.db.goods, el => {
-      return (!state.goods.filter
-          || el.description.toLowerCase().indexOf(state.goods.filter) != -1
-          || el.code.toLowerCase().indexOf(state.goods.filter) != -1)
-      && (!state.groups.selected.length
-          || _.some(state.groups.selected, gr => gr.id == el.groupRef ))
-    })
-  } else {
-    state.goods.filtered = []
-  }
   RECALC_GOODS_NAV(state, state.goods.filtered.length)
 }
 
@@ -52,14 +40,7 @@ export const SET_GOODS_FILTER = (state, filter) => {
 }
 
 export const LOAD_GROUPS_LIST = (state, items) => {
-  items = items || state.db.groups
-  if (state.groups.filter) {
-    Vue.set(state.groups, 'list', _.filter(items, el => {
-      return el.name.toLowerCase().indexOf(state.groups.filter) != -1
-    }))
-  } else {
-    Vue.set(state.groups, 'list', items)
-  }
+
 }
 
 export const SET_GROUPS_FILTER = (state, filter) => {

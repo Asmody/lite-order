@@ -1,6 +1,6 @@
 import db from '@/modules/db'
 
-export const loadGoodsDb = ({commit, dispatch, state}, resolve) => {
+export const loadGoodsDb = ({commit, dispatch, state}) => {
   dispatch('setLoading', true)
   return Promise.all([
     db.getGoods({orderBy: state.goods.options.orderBy}),
@@ -11,7 +11,6 @@ export const loadGoodsDb = ({commit, dispatch, state}, resolve) => {
     commit('SET_DB_GOODS', goods)
     commit('SET_DB_PRICES', prices)
     dispatch('setLoading', false)
-    resolve()
   })
   .catch(error => {
     dispatch('setLoading', false)
@@ -20,31 +19,9 @@ export const loadGoodsDb = ({commit, dispatch, state}, resolve) => {
 }
 
 export const loadGoodsList = ({dispatch, commit, state}) => {
-  new Promise((resolve, reject) => {
-    if (state.db.goods === null) {
-      dispatch('loadGoodsDb', resolve)
-    } else {
-      resolve()
-    }
-  })
-  .then(() => {
-    let perPage = state.goods.options.perPage
-    let currentPage = state.goods.nav.currentPage
-    let goodsDbList = (state.goods.filtered.length ? state.goods.filtered : state.db.goods )
-    let _goods = _.slice(goodsDbList, (currentPage-1)*perPage, currentPage*perPage)
-    let items= _.map(_goods, el => {
-      return {
-        ...el,
-        price: _.defaultTo(state.db.prices[el.id], 0),
-        qty: _.get(state.order.items, [el.id, 'qty'], 0)
-      }
-    })
-    commit('LOAD_GOODS_LIST', items)
-  })
-  .catch(error => {
-    console.error(error)
-    dispatch('setError', error.message)
-  })
+  if (state.db.goods === null) {
+    dispatch('loadGoodsDb')
+  }
 }
 
 export const setGoodsPerPage = ({dispatch, commit, state}, perPage) => {
@@ -71,20 +48,15 @@ export const loadGroupsFromDB = ({dispatch, commit, state}) => {
 export const loadGroupsList = ({dispatch, commit, state}) => {
   if (state.db.groups === null) {
     dispatch('loadGroupsFromDB')
-    .then(() => commit('LOAD_GROUPS_LIST'))
-  } else {
-    commit('LOAD_GROUPS_LIST')
   }
 }
 
 export const setGroupsFilter = ({dispatch, commit, state}, filter) => {
   commit('SET_GROUPS_FILTER', filter)
-  dispatch('loadGroupsList')
 }
 
 export const clearGroupsFilter = ({dispatch, commit, state}) => {
   commit('SET_GROUPS_FILTER', '')
-  dispatch('loadGroupsList')
 }
 
 export const addSelectedGroup = ({dispatch, commit, state}, group) => {
