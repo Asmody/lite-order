@@ -1,11 +1,15 @@
-<template>
-  <nav class="pagination">
-    <a class="pagination-link" @click=""><vf-icon icon="fast-backward" fixed /></a>
-    <a class="pagination-link" @click=""><vf-icon icon="step-backward" fixed /></a>
-    <a class="pagination-link is-current">1</a>
-    <a class="pagination-link" @click=""><vf-icon icon="step-forward" fixed /></a>
-    <a class="pagination-link" @click=""><vf-icon icon="fast-forward" fixed /></a>
-    <span class="pagination-link">100</span>
+<template lang="pug">
+  nav.pagination
+    a.pagination-link(@click="")
+      vf-icon(icon="fast-backward" fixed)
+    a.pagination-link(@click="")
+      vf-icon(icon="step-backward" fixed)
+    span.pagination-link.is-current {{curPage}}
+    a.pagination-link(@click="")
+      vf-icon(icon="step-forward" fixed)
+    a.pagination-link(@click="")
+      vf-icon(icon="fast-forward" fixed)
+    span.pagination-link {{pages}}
   </nav>
 </template>
 
@@ -13,10 +17,15 @@
 import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'pagination',
-  
+  data () {
+    return {
+      curPage: 1,
+      pages: 100
+    }
+  }
 }
 </script>
 
-<style lang="scss">
+<style lang="sass">
 
 </style>

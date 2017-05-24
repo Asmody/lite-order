@@ -1,21 +1,17 @@
-<template>
-  <div class="cart">
-    <div class="card">
-      <div class="card-header">
-        <span class="card-header-icon" >
-          <vf-icon icon="shopping-cart"></vf-icon>
-        </span>
-        <p class="card-header-title">
-          {{money(total)}}
-        </p>
-      </div>
-      <div class="card-footer">
-        <a class="card-footer-item" @click="showOrder=true">Оформить</a>
-        <a class="card-footer-item" @click="clearOrder">Очистить</a>
-      </div>
-    </div>
-    <order :is-active="showOrder" @close="showOrder=false"></order>
-  </div>
+<template lang="pug">
+  .cart
+    .card
+      .card-header
+        span.card-header-icon
+          vf-icon(icon="shopping-cart")
+        p.card-header-title {{money(total)}}
+      .card-footer
+        a.card-footer-item(@click="showOrder=true") Оформить
+        a.card-footer-item(@click="clearOrder") Очистить
+    order(
+      :is-active="showOrder"
+      @close="showOrder=false"
+    )
 </template>
 
 <script>

@@ -1,11 +1,9 @@
-<template>
-  <div id="spinner" v-if="loading">
-    <div class="cssload-loader">
-      <div class="cssload-inner cssload-one"></div>
-      <div class="cssload-inner cssload-two"></div>
-      <div class="cssload-inner cssload-three"></div>
-    </div>
-  </div>
+<template lang="pug">
+  #spinner(v-if="loading")
+    .cssload-loader
+      .cssload-inner.cssload-one
+      .cssload-inner.cssload-two
+      .cssload-inner.cssload-three
 </template>
 
 <script>

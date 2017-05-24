@@ -25,29 +25,24 @@ initialState.db = {
   customers: null
 }
 initialState.goods = {
-  list: [],
-  nav: {
-    pages: 0,
+   nav: {
     currentPage: 1
   },
   options: {
     perPage: 20,
-    lastKey: '',
-    lastPage: false,
-//      orderBy: '.key'
     orderBy: 'code'
   },
   filter: '',
-  filtered: []
 }
 initialState.groups = {
-  list: [],
   selected: [],
   filter: ''
 }
 initialState.orders = {
-  list: [],
-  filter: {}
+  filter: {
+    date: null,
+    state: null
+  }
 }
 initialState.order = {
   items: {},

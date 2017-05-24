@@ -1,20 +1,15 @@
-<template>
-  <div class="modal" :class="{'is-active':active}">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-      <div class="modal-card-head">
-        <p class="modal-card-title">{{title}}</p>
-        <button class="delete" @click="close"></button>
-      </div>
-      <div class="modal-card-body">
-        <slot></slot>
-      </div>
-      <div class="modal-card-foot">
-        <a class="button is-success" @click="save">Сохранить</a>
-        <a class="button" @click="close">Отменить</a>
-      </div>
-    </div>
-  </div>
+<template lang="pug">
+  .modal(:class="{'is-active':active}")
+    .modal-background
+    .modal-card
+      .modal-card-head
+        p.modal-card-title {{title}}
+        button.delete(@click="close")
+      .modal-card-body
+        slot
+      .modal-card-foot
+        a.button.is-success(@click="save") Сохранить
+        a.button(@click="close") Отменить
 </template>
 
 <script>
@@ -40,12 +35,10 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.modal-card{
-  width: 95%;
-  &-body{
-    display: flex;
-    flex-direction: column;
-  }
-}
+<style lang="sass" scoped>
+.modal-card
+  width: 95%
+  &-body
+    display: flex
+    flex-direction: column
 </style>

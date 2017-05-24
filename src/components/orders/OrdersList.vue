@@ -17,11 +17,11 @@
           td.col-num
             span.icon.is-small.open-row(@click="open(order)")
               vf-icon(:icon="opened(order) ? 'minus-square-o' : 'plus-square-o'")
-            | {{order.number}}
-          td.col-date {{dateFmt(order.date)}}
-          td.col-cstmr {{ldGet(order, ['customer', 'description'], '')}}
-          td.col-sum {{moneyFmt(order.total)}}
-          td.col-state state
+            | {{ order.number }}
+          td.col-date {{ dateFmt(order.date) }}
+          td.col-cstmr {{ ldGet(order, ['customer', 'description'], '') }}
+          td.col-sum {{ moneyFmt(order.total) }}
+          td.col-state {{ order.state }}
           td.col-actions 
             .field.is-grouped
               p.control
@@ -68,9 +68,9 @@ export default {
     this.loadOrdersList()
   },
   computed: {
-    ...mapGetters([
-      'orders'
-    ])
+    ...mapGetters({
+      orders: 'ordersList'
+    })
   },
   methods: {
     open (row) {

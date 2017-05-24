@@ -24,7 +24,7 @@ export default {
   },
   getOrders ({user, success}) {
     return new Promise((resolve, reject) => {
-      db.ref('orders').orderByChild('date').on('value', 
+      fb.getCollectionOn('orders', 'date', 
         snapshot => {
           let items = []
           snapshot.forEach(snap => {

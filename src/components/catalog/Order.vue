@@ -1,57 +1,63 @@
-<template>
-  <modal :is-active="active" @close="close" @save="saveOrder" title="Оформление заказа">
-    <div class="level">
-      <div class="level-left">
-        <div class="level-item"># {{order.number}}</div>
-      </div>
-      <div class="level-center">
-        <div class="level-item">Всего позиций: {{orderSize}}</div>
-      </div>
-      <div class="level-right">
-        <div class="level-item">На сумму: {{money(orderTotal)}}</div>
-      </div>
-    </div>
-    <div class="field">
-      <p class="control">
-        <span class="select">
-          <select v-model="order.customer">
-            <option v-for="customer in userCustomers" :key="customer.id" :value="customer">
-              {{customer.description}}
-            </option>
-          </select>
-        </span>
-      </p>
-    </div>
-    <div class="field">
-      <p class="control">
-        <input class="input" type="text" placeholder="Комментарий к заказу" v-model="order.comment">
-      </p>
-    </div>
-    <scroll-table t-class="table is-striped order-items">
-      <thead slot="thead">
-        <tr>
-          <th class="col-code">Код</th>
-          <th class="col-brand">Бренд</th>
-          <th class="col-descr">Наименование</th>
-          <th class="col-price">Цена</th>
-          <th class="col-qty">Кол-во</th>
-          <th class="col-sum">Сумма</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, key) in orderItems" :key="key">
-          <td class="col-code">{{item.good.code}}</td>
-          <td class="col-brand">{{item.good.brand}}</td>
-          <td class="col-descr">{{item.good.description}}</td>
-          <td class="col-price">{{money(item.price)}}</td>
-          <td class="col-qty">
-            <input class="input is-small good-qty" type="number" min="0" maxlength="10" v-model.number="item.qty" @input="(e)=>{updateQty(item.good, e)}" />
-          </td>
-          <td class="col-sum">{{money(item.price * item.qty)}}</td>
-        </tr>
-      </tbody>
-    </scroll-table>
-  </modal>
+<template lang="pug">
+  modal(
+    :is-active="active"
+    @close="close"
+    @save="saveOrder"
+    title="Оформление заказа"
+  )
+    .level
+      .level-left
+        .level-item # {{order.number}}
+      .level-center
+        .level-item Всего позиций: {{orderSize}}
+      .level-right
+        .level-item На сумму: {{money(orderTotal)}}
+    .field.has-addons
+      p.control
+        span.select
+          select(v-model="order.customer")
+            option(
+              v-for="customer in userCustomers"
+              :key="customer.id"
+              :value="customer"
+            ) {{customer.description}}
+      p.control
+        button.button
+          vf-icon(icon="plus" fixed)
+    .field
+      p.control
+        input.input(
+          type="text"
+          placeholder="Комментарий к заказу"
+          v-model="order.comment"
+        ) 
+    scroll-table(t-class="table table-striped order-items")
+      thead(slot="thead")
+        tr
+          th.col-code Код
+          th.col-brand Бренд
+          th.col-descr Наименование
+          th.col-price Цена
+          th.col-qty Кол-во
+          th.col-sum Сtумма
+      tbody
+        tr(
+          v-for="(item, key) in orderItems"
+          :key="key"
+        )
+          td.col-code {{item.good.code}}
+          td.col-brand {{item.good.brand}}
+          td.col-descr {{item.good.description}}
+          td.col-price {{money(item.price)}}
+          td.col-qty 
+            input.input.is-small.good-qty(
+              type="number"
+              min="0"
+              maxlength="10"
+              v-model.number="item.qty"
+              @input="(e)=>{updateQty(item.good, e)}"
+            )
+          td.col-sum {{money(item.price * item.qty)}}
 </template>
 
 <script>
@@ -117,17 +123,14 @@ export default {
 
 </script>
 
-<style lang="scss">
-.order-items{
-  table-layout: fixed;
+<style lang="sass">
+.order-items
+  table-layout: fixed
   .col-code, .col-brand,
-  .col-price,.col-qty,.col-sum{
-    width: 10%;
-  }
-  td{
-    &.col-price,&.col-qty,&.col-sum{
-      text-align: right;
-    }
-  }
-}
+  .col-price, .col-qty, .col-sum
+    width: 10%
+  td
+    &.col-price, &.col-qty, &.col-sum
+      text-align: right
+
 </style>

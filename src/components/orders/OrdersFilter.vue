@@ -41,7 +41,7 @@ export default {
     }
   },
   mounted () {
-    this.date = utils.date(this.filter.date)
+    this.date = this.filter.date ? utils.date(this.filter.date) : ''
   },
   computed: {
     ...mapGetters({

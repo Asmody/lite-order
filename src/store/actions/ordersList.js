@@ -12,11 +12,7 @@ export const loadOrdersFromDB = ({dispatch, commit, state}, afterLoad) => {
 
 export const loadOrdersList = ({dispatch, commit, state}) => {
   if (state.db.orders === null) {
-    dispatch('loadOrdersFromDB', 
-      () => commit('LOAD_ORDERS_LIST')
-    )
-  } else {
-    commit('LOAD_ORDERS_LIST')
+    dispatch('loadOrdersFromDB', _.noop)
   }
 }
 

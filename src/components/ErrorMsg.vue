@@ -1,10 +1,8 @@
-<template>
-  <transition name="fade">
-    <div class="notification is-danger" v-if="error">
-      <button class="delete" @click="clearError"></button>
-      {{error}}
-    </div>
-  </transition>
+<template lang="pug">
+  transition(name="fade")
+    .notification.is-danger(v-if="error")
+      button.delete(@click="clearError") 
+      | {{error}}
 </template>
 
 <script>
@@ -26,6 +24,6 @@ export default {
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="sass" scoped>
 
 </style>

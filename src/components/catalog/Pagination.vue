@@ -1,19 +1,25 @@
-<template>
-    <nav class="pagination">
-    <p class="control">
-      <span class="select" >
-        <select v-model="perPage" @change="perPageChange">
-          <option v-for="pp in perPageList" :value="pp">{{pp}}</option>
-        </select>
-      </span>
-    </p>
-    <a class="pagination-link" @click="setGoodsListFirstPage"><vf-icon icon="fast-backward" fixed /></a>
-    <a class="pagination-link" @click="setGoodsListPrevPage"><vf-icon icon="step-backward" fixed /></a>
-    <a class="pagination-link is-current">{{goodsNav.currentPage}}</a>
-    <a class="pagination-link" @click="setGoodsListNextPage"><vf-icon icon="step-forward" fixed /></a>
-    <a class="pagination-link" @click="setGoodsListLastPage"><vf-icon icon="fast-forward" fixed /></a>
-    <span class="pagination-link">{{goodsNav.pages}}</span>
-  </nav>
+<template lang="pug">
+  nav.pagination
+    p.control
+      span.select
+        select(
+          v-model="perPage"
+          @change="perPageChange"
+        )
+          option(
+            v-for="pp in perPageList"
+            :value="pp"
+          ) {{pp}}
+    a.pagination-link(@click="setGoodsListFirstPage")
+      vf-icon(icon="fast-backward" fixed)
+    a.pagination-link(@click="setGoodsListPrevPage")
+      vf-icon(icon="step-backward" fixed)
+    span.pagination-link.is-current {{goodsNav.currentPage}}
+    a.pagination-link(@click="setGoodsListNextPage")
+      vf-icon(icon="step-forward" fixed)
+    a.pagination-link(@click="setGoodsListLastPage")
+      vf-icon(icon="fast-forward" fixed)
+    span.pagination-link {{goodsNav.pages}}
 </template>
 
 <script>
@@ -33,9 +39,9 @@ export default {
   computed: {
     ...mapState({
       goodsPerPage: state => state.goods.options.perPage,
-      goodsNav: state => state.goods.nav
     }),
     ...mapGetters([
+      'goodsNav'
     ])
   },
   methods: {

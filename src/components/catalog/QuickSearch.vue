@@ -1,19 +1,17 @@
-<template>
-  <div class="field has-addons">
-  <p class="control">
-    <input v-model="search" class="input" type="text" placeholder="код или наименование" />
-    </p>
-    <p class="control">
-    <button class="button" @click="makeSeatch">
-      <vf-icon icon="search" fixed />
-    </button>
-    </p>
-    <p class="control">
-    <button class="button" @click="clearSearch">
-      <vf-icon icon="times" fixed />
-    </button>
-    </p>
-  </div>
+<template lang="pug">
+  .field.has-addons
+    p.control
+      input.input(
+        v-model="search"
+        type="text"
+        placeholder="код или наименование"
+      )
+    p.control
+      button.button(@click="makeSeatch")
+        vf-icon(icon="search" fixed)
+    p.control
+      button.button(@click="clearSearch")
+        vf-icon(icon="times" fixed)
 </template>
 
 <script>
@@ -30,6 +28,9 @@ export default {
     search (newSearch) {
       this.makeSeatch()
     }
+  },
+  beforeMount () {
+    this.search = this.$store.state.goods.filter
   },
   methods: {
     makeSeatch () {
