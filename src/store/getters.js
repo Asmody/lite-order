@@ -34,7 +34,7 @@ export const goods = state => {
 export const goodsNav = state => {
   let goodsCount = goods(state).length
   let perPage = state.goods.options.perPage
-  let pages = (goodsCount % perPage == 0 ? goodsCount/perPage : Math.floor(goodsCount/perPage)+1)
+  let pages = Math.ceil(goodsCount/perPage)
   let currentPage = state.goods.nav.currentPage <= pages ? state.goods.nav.currentPage : 1
   
   return {

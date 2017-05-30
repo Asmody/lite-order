@@ -8,9 +8,11 @@
     .scroll-table-body
       table(:class="tClass")
         slot
-    .scroll-table-footer
+    .scroll-table-total
       table(:class="tClass")
         slot(name="tfoot")
+    .scroll-table-footer
+      slot(name="tfooter")
 </template>
 
 <script>
@@ -40,5 +42,9 @@ export default {
     flex: 1 1 auto
     display: flex
     overflow: auto
+  &-total
   &-footer
+    >
+      border-top: 1px solid #dbdbdb
+      padding-top: 0.5rem
 </style>

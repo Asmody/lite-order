@@ -24,10 +24,6 @@ export const loadGoodsList = ({dispatch, commit, state}) => {
   }
 }
 
-export const setGoodsPerPage = ({dispatch, commit, state}, perPage) => {
-  commit('SET_GOODS_PER_PAGE', perPage)
-}
-
 export const setGoodsFilter = ({dispatch, commit, state}, filter) => {
   commit('SET_GOODS_FILTER', filter)
 }
@@ -64,15 +60,10 @@ export const removeSelectedGroup = ({dispatch, commit, state}, group) => {
   commit('REMOVE_SELECTED_GROUP', group)
 }
 
-export const setGoodsListLastPage = ({dispatch, commit, state}) => {
-  commit('SET_GOODS_LIST_LAST_PAGE')
+export const goodsListChangePage = ({ commit }, page) => {
+  commit('SET_GOODS_LIST_PAGE', page)
 }
-export const setGoodsListNextPage = ({dispatch, commit, state}) => {
-  commit('SET_GOODS_LIST_NEXT_PAGE')
-}
-export const setGoodsListPrevPage = ({dispatch, commit, state}) => {
-  commit('SET_GOODS_LIST_PREV_PAGE')
-}
-export const setGoodsListFirstPage = ({dispatch, commit, state}) => {
-  commit('SET_GOODS_LIST_FIRST_PAGE')
+
+export const goodsListChangePerPage = ({ commit }, perPage) => {
+  commit('SET_GOODS_LIST_PER_PAGE', perPage)
 }

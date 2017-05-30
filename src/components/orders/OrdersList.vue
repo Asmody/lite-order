@@ -1,44 +1,47 @@
 <template lang="pug">
-  scroll-table#orders-list(
-    t-class="table is-striped orders-list"
-  )
-    orders-filter(slot="tcaption")
-    thead(slot="thead")
-      tr
-        th.col-num #
-        th.col-date Дата
-        th.col-cstmr Клиент
-        th.col-sum Сумма
-        th.col-state Статус
-        th.col-actions
-    tbody
-      template(v-for="order in orders")
-        tr(:key="order.id")
-          td.col-num
-            span.icon.is-small.open-row(@click="open(order)")
-              vf-icon(:icon="opened(order) ? 'minus-square-o' : 'plus-square-o'")
-            | {{ order.number }}
-          td.col-date {{ dateFmt(order.date) }}
-          td.col-cstmr {{ ldGet(order, ['customer', 'description'], '') }}
-          td.col-sum {{ moneyFmt(order.total) }}
-          td.col-state {{ order.state }}
-          td.col-actions 
-            .field.is-grouped
-              p.control
-                button.button.is-small.is-primary.is-outlined
-                  span.icon.is-small
-                    vf-icon(icon="print")
-              p.control
-                button.button.is-small.is-info.is-outlined
-                  span.icon.is-small
-                    vf-icon(icon="repeat")
-              p.control
-                button.button.is-small.is-danger.is-outlined(@click="delOrder(order)")
-                  span.icon.is-small
-                    vf-icon(icon="trash-o")
-        tr(v-if="opened(order)")
-          td.col-items(colspan="6")
-            opened-order(:order="order")
+scroll-table#orders-list(
+  t-class="table is-striped orders-list"
+)
+  orders-filter(slot="tcaption")
+  thead(slot="thead")
+    tr
+      th.col-num #
+      th.col-date Дата
+      th.col-cstmr Клиент
+      th.col-sum Сумма
+      th.col-state Статус
+      th.col-actions
+  tbody
+    template(v-for="order in orders")
+      tr(:key="order.id")
+        td.col-num
+          span.icon.is-small.open-row(@click="open(order)")
+            vf-icon(:icon="opened(order) ? 'minus-square-o' : 'plus-square-o'")
+          | {{ order.number }}
+        td.col-date {{ dateFmt(order.date) }}
+        td.col-cstmr {{ ldGet(order, ['customer', 'description'], '') }}
+        td.col-sum {{ moneyFmt(order.total) }}
+        td.col-state {{ order.state }}
+        td.col-actions 
+          .field.is-grouped
+            p.control
+              button.button.is-small.is-primary.is-outlined
+                span.icon.is-small
+                  vf-icon(icon="print")
+            p.control
+              button.button.is-small.is-info.is-outlined
+                span.icon.is-small
+                  vf-icon(icon="repeat")
+            p.control
+              button.button.is-small.is-danger.is-outlined(@click="delOrder(order)")
+                span.icon.is-small
+                  vf-icon(icon="trash-o")
+      tr(v-if="opened(order)")
+        td.col-items(colspan="6")
+          opened-order(:order="order")
+  .level(slot="tfooter")
+    .level-item
+      orders-pagination
 </template>
 
 <script>
@@ -48,6 +51,7 @@ import { mapGetters, mapActions } from 'vuex'
 import ScrollTable from '@/components/common/ScrollTable'
 import OrdersFilter from './OrdersFilter'
 import OpenedOrder from './OpenedOrder'
+import OrdersPagination from './OrdersPagination'
 
 import Message from '@/plugins/Message'
 Vue.use(Message)
@@ -62,7 +66,8 @@ export default {
   components: {
     ScrollTable,
     OrdersFilter,
-    OpenedOrder
+    OpenedOrder,
+    OrdersPagination
   },
   beforeMount () {
     this.loadOrdersList()

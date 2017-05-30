@@ -4,9 +4,6 @@
       .level-left
         .level-item
           quick-search
-      .level-right
-        .level-item
-          pagination
     thead(slot="thead")
       tr
         th.col-code Код
@@ -32,14 +29,18 @@
             v-model.number="good.qty"
             @input="(e)=>{updateQty(good, e)}"
           )
+    .level(slot="tfooter")
+      .level-item
+        goods-pagination
+
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
 import ScrollTable from '@/components/common/ScrollTable'
-import QuickSearch from '@/components/catalog/QuickSearch'
-import Pagination from '@/components/catalog/Pagination'
+import QuickSearch from './QuickSearch'
+import GoodsPagination from './GoodsPagination'
 
 export default {
   name: 'goods-list',
@@ -51,7 +52,7 @@ export default {
   components: {
     ScrollTable,
     QuickSearch,
-    Pagination
+    GoodsPagination
   },
   computed: {
     ...mapGetters({

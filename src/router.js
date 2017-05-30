@@ -5,10 +5,10 @@ Vue.use(VueRouter)
 
 import Login from '@/pages/Login.vue'
 
-import Catalog from '@/pages/Catalog.vue'
-import Orders from '@/pages/Orders.vue'
-import Customers from '@/pages/Customers.vue'
-import Profile from '@/pages/Profile.vue'
+const Catalog = resolve => require(['@/pages/Catalog.vue'], resolve)
+const Orders = resolve => require(['@/pages/Orders.vue'], resolve)
+const Customers = resolve => require(['@/pages/Customers.vue'], resolve)
+const Profile = resolve => require(['@/pages/Profile.vue'], resolve)
 
 export let routes = [
   { path: '/', redirect: '/catalog' },
